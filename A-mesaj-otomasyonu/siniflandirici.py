@@ -64,6 +64,18 @@ KULLANIM_SONRASI = re.compile(r"\w+(dan|den|tan|ten)\s+sonra|\bsonra\b|\bafter (
 # (ürün adı) gibi masum soruları yüksek öncelikli sağlık şikâyeti sayıyordu (10 masum sorudan 6'sı).
 VUCUT = re.compile(r"\b(yuz|cild|goz|gozler|dudag|dudaklar|sac|saclar|vucud|boyn|eller|koltuk alt)"
                    r"(im|um)\w*|\bkafam\w*|\bvucud\w*|\bmy (face|skin|eyes?|lips?|hair|scalp)\b")
+# Kişinin kendi vücudu + bir olay anlatımı da istenmeyen etkidir. Olay yalnızca "…dan sonra" değil;
+# "sürünce / kullanınca" (zarf-fiil) ya da geçmiş zamanlı bir fiil de olabilir ("yüzümde yara çıktı",
+# "cildim kötü oldu"). Harici inceleme (ChatGPT) "Kremi sürünce yüzümde yara çıktı, ne yapmalıyım?"
+# mesajının ürün sorusu sanılıp otomatik cevaplandığını gösterdi. Belirti kelimesi listesi hiçbir
+# zaman tam olmayacağı için kural belirtiye değil, anlatının yapısına bakıyor.
+ZARF_FIIL = re.compile(r"\b\w+(inca|ince|unca|unce)\b")
+GECMIS_ZAMAN = re.compile(r"\b\w{2,}(di|du|ti|tu|mis|mus)\b")
+
+# Yardım isteyen ifade, bir şeyin ters gittiğini gösterir: ürün/fiyat sorusu gibi görünse bile
+# otomatik ürün cevabı verilmez, mesaj insana gider.
+YARDIM = re.compile(r"\bne yap(mali|ayim|abilir|mam|acag)\w*|\byardim (edin|eder misiniz)|"
+                    r"\bwhat (should|can) i do\b")
 
 IADE_SIKAYET = _derle([
     r"\biade", r"\bsikayet", r"\bgeri (gonder|odeme|iade)", r"\bdegisim\b", r"\bdegistir",
@@ -74,6 +86,8 @@ IADE_SIKAYET = _derle([
     r"\bparam\w* geri", r"\bgeri istiyorum", r"\bpara iade", r"\bise yaramadi",
     r"\byanlis (urun|renk|beden|numara|siparis|ton)", r"\bkiril(mis|di)", r"\byirtil",
     r"\bmemnun (degil|kalmadi)", r"\bberbat", r"\bcevap (yok|vermiyor|alamiyorum)",
+    # Hasar anlatımı (harici inceleme: "Krem şişesi kargoda patlamış, ne yapmalıyım?" kaçıyordu):
+    r"\bpatla(mis|di|k)\b", r"\bdokul(mus|du)\b", r"\bsizdir", r"\bkapag\w* acil(mis|di)\b",
     r"\b(refund\w*|return\w*|complain\w*|damaged|broken|wrong item|cancel\w*)\b",
 ])
 
@@ -171,6 +185,7 @@ class Siniflandirma:
     urun_basliklari: list[str] = field(default_factory=list)
     spam: bool = False
     genel_kargo: bool = False
+    yardim_istegi: bool = False   # "ne yapmalıyım" vb. → otomatik ürün/fiyat cevabı verilmez
     dil: str = "tr"
 
 
@@ -221,11 +236,13 @@ def siniflandir(mesaj: str) -> Siniflandirma:
     metin = normalize(mesaj or "")
     dil = dil_tespit(mesaj or "")
 
+    yardim = bool(YARDIM.search(metin))
     istenmeyen = _eslesenler(ISTENMEYEN_ETKI, metin)
     if not istenmeyen:
-        sonra, vucut = KULLANIM_SONRASI.search(metin), VUCUT.search(metin)
-        if sonra and vucut:
-            istenmeyen = [f"kullanım sonrası şikâyet: '{sonra.group(0)}' + '{vucut.group(0)}'"]
+        vucut = VUCUT.search(metin)
+        olay = KULLANIM_SONRASI.search(metin) or ZARF_FIIL.search(metin) or GECMIS_ZAMAN.search(metin)
+        if vucut and olay:
+            istenmeyen = [f"kişinin kendi vücudu + olay anlatımı: '{vucut.group(0)}' + '{olay.group(0)}'"]
     iade = _eslesenler(IADE_SIKAYET, metin)
     spam = _eslesenler(SPAM, metin)
     kisisel = _eslesenler(SIPARIS_KISISEL, metin)
@@ -269,6 +286,7 @@ def siniflandir(mesaj: str) -> Siniflandirma:
             gerekce=["kargo (genel soru; kişisel sipariş referansı/numarası yok)"] if genel_kargo
             else ["bilinen bir konu kalıbı yok"],
             genel_kargo=genel_kargo,
+            yardim_istegi=yardim,
             dil=dil,
         )
 
@@ -280,5 +298,6 @@ def siniflandir(mesaj: str) -> Siniflandirma:
         siparis_nolari=nolar,
         urun=urun,
         urun_basliklari=basliklar,
+        yardim_istegi=yardim,
         dil=dil,
     )

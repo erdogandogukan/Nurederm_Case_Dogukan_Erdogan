@@ -8,7 +8,8 @@ KLASOR = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(KLASOR))
 
 from dummyjson_api import ApiHatasi  # noqa: E402
-from isleyici import DEVIR_METNI, ayni_musteri, mesaj_isle, mesajlari_isle  # noqa: E402
+from isleyici import (DEVIR_METNI, NEDEN_GUVENLIK, NEDEN_HASSAS, ayni_musteri, mesaj_isle,  # noqa: E402
+                      mesajlari_isle)
 from siniflandirici import KONULAR  # noqa: E402
 
 MESAJLAR = json.loads((KLASOR / "mesajlar.json").read_text(encoding="utf-8"))
@@ -160,9 +161,41 @@ class UrunAramasi(unittest.TestCase):
         self.assertIn("Vaseline Men Body and Face Lotion — 9,99 $", t.cevap_taslagi)
 
 
+class HariciIncelemedenGelenler(unittest.TestCase):
+    """ChatGPT incelemesinde otomatik cevaplandığı gösterilen mesajlar ve aynı açığın varyantları."""
+
+    def test_sorun_anlatimi_otomatik_urun_cevabi_almaz(self):
+        ornekler = {
+            "Kremi sürünce yüzümde yara çıktı, ne yapmalıyım?": "istenmeyen-etki",   # ChatGPT
+            "Krem şişesi kargoda patlamış, ne yapmalıyım?": "iade-sikayet",           # ChatGPT
+            "Serumu kullanınca gözlerim sulandı": "istenmeyen-etki",
+            "Maskeyi uyguladım ve cildim kötü oldu, ne yapayım?": "istenmeyen-etki",
+            "Losyonun kapağı açılmış, yarısı dökülmüş": "iade-sikayet",
+        }
+        for metin, konu in ornekler.items():
+            with self.subTest(metin=metin):
+                api = SahteApi(GERCEK_SEPETLER)
+                t = mesaj_isle(mesaj(metin), api)
+                self.assertEqual(t.konu, konu)
+                self.assertTrue(t.devret)
+                self.assertEqual(api.cagrilar, [])  # ürün araması / öneri yok
+
+    def test_yardim_isteyen_urun_sorusu_devredilir_ve_urun_bilgisi_verilmez(self):
+        api = SahteApi(arama={"serum": [{"title": "Test Serum", "price": 5, "category": "skin-care"}]})
+        t = mesaj_isle(mesaj("Serumu aldım ama nasıl kullanacağımı bilmiyorum, ne yapmalıyım?"), api)
+        self.assertTrue(t.devret)
+        self.assertNotIn("Test Serum", t.cevap_taslagi)
+
+    def test_masum_urun_sorusu_saglik_sikayeti_sayilmaz(self):
+        t = mesaj_isle(mesaj("Yüzüm için hangi serum uygun?"), SahteApi())
+        self.assertEqual(t.konu, "urun-sorusu")
+
+
 class UctanUca(unittest.TestCase):
     def setUp(self):
-        self.talepler = mesajlari_isle(MESAJLAR, SahteApi(GERCEK_SEPETLER))
+        # Gerçek API'de 'lotion' araması bu ürünü döndürüyor (#10); diğer kozmetik terimleri 0 sonuç.
+        arama = {"lotion": [{"title": "Vaseline Men Body and Face Lotion", "price": 9.99, "category": "skin-care"}]}
+        self.talepler = mesajlari_isle(MESAJLAR, SahteApi(GERCEK_SEPETLER, arama=arama))
 
     def test_cikti_semasi(self):
         for t in self.talepler:
@@ -171,8 +204,29 @@ class UctanUca(unittest.TestCase):
             self.assertIn(cikti["konu"], KONULAR)
             self.assertIsInstance(cikti["devret"], bool)
 
+    def test_hassas_ve_guvenlik_devirleri(self):
+        self.assertEqual({t.id for t in self.talepler
+                          if t.devir_nedeni in (NEDEN_HASSAS, NEDEN_GUVENLIK)}, {1, 3, 4, 5})
+
     def test_devredilenler(self):
-        self.assertEqual({t.id for t in self.talepler if t.devret}, {1, 3, 4, 5})
+        # 1,3,4,5: hassas konu / sipariş doğrulanamadı. Diğerleri: taslak sistemde olmayan bir bilgi için
+        # temsilci/uzman dönüşü vaat ediyor ya da [YER TUTUCU] içeriyor.
+        self.assertEqual({t.id for t in self.talepler if t.devret}, {1, 3, 4, 5, 8, 9, 11, 12, 13, 14, 15})
+
+    def test_soz_veren_ya_da_eksik_taslak_devredilmeden_kalmaz(self):
+        # Harici incelemede bulunan tutarsızlık: "uzmanımız iletecek" deyip devret=false.
+        soz = ("iletecek", "paylaşacak", "bildireceğiz", "dönüş yapılacak", "iletişime geçecek",
+               "will share", "will contact", "will get back", "[")
+        for t in self.talepler:
+            if t.cevap_taslagi and any(s in t.cevap_taslagi for s in soz):
+                with self.subTest(id=t.id):
+                    self.assertTrue(t.devret)
+
+    def test_test_apisi_urunleri_kesin_katalog_gibi_sunulmaz(self):
+        for t in self.talepler:
+            if t.cevap_taslagi:
+                self.assertNotIn("katalogumuz", t.cevap_taslagi.lower())
+                self.assertNotIn("fiyatlarımız", t.cevap_taslagi)
 
     def test_spam_yanitlanmaz(self):
         spam = next(t for t in self.talepler if t.id == 7)
