@@ -28,6 +28,12 @@ ise girmek icin bir case geldi cok onemli mail adresimde var case icerigi berabe
 https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan olusturdum
 ```
 
+## Prompt 4 · ≈11:50 · Claude Code'un sorusuna verdiğim cevap (seçenekli soru)
+
+> **Soru:** Teslim e-postası nasıl gitsin? (Son teslim 14:00, şu an ~11:50.)
+> Seçenekler: *İnceledim, gönder* · *Gmail'de taslak oluştur* · *Önce değişiklik isteyeceğim*
+> **Cevabım:** `Gmail'de taslak oluştur` (teslim e-postasını kontrol edip kendim gönderdim)
+
 ---
 
 ## Claude Code'un Bölüm A'da yaptıkları (özet süreç günlüğü)
