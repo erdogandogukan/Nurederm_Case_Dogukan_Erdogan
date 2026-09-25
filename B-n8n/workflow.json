@@ -1,4 +1,5 @@
 {
+  "id": "LaptopFiyatTakip",
   "name": "Laptop Fiyat Takibi — webscraper.io → Google Sheets + E-posta",
   "nodes": [
     {
@@ -18,6 +19,17 @@
       "position": [
         0,
         300
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "97b5016f-1fd2-591e-b4cd-cb720faf38d7",
+      "name": "Elle Çalıştır (test)",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        480
       ]
     },
     {
@@ -548,6 +560,17 @@
         ]
       ]
     },
+    "Elle Çalıştır (test)": {
+      "main": [
+        [
+          {
+            "node": "Ayarlar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
     "Ayarlar": {
       "main": [
         [
@@ -739,7 +762,8 @@
     "executionOrder": "v1",
     "timezone": "Europe/Istanbul",
     "saveDataErrorExecution": "all",
-    "saveDataSuccessExecution": "all"
+    "saveDataSuccessExecution": "all",
+    "errorWorkflow": "hataBildirimAkis"
   },
   "pinData": {},
   "meta": {

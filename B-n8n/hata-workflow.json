@@ -1,4 +1,5 @@
 {
+  "id": "hataBildirimAkis",
   "name": "Hata Bildirimi (Error Workflow)",
   "nodes": [
     {

@@ -12,6 +12,10 @@ import uuid
 from pathlib import Path
 
 KOK = Path(__file__).resolve().parents[1]
+# n8n CLI içe aktarımı (import:workflow) workflow id'si olmadan başarısız oluyor
+# ("NOT NULL constraint failed: workflow_entity.id"); arayüzden içe aktarmada da zararı yok.
+ANA_AKIS_ID = "LaptopFiyatTakip"
+HATA_AKISI_ID = "hataBildirimAkis"
 SABLON_ADI = "Competitor Price Monitoring with Web Scraping, Google Sheets & Telegram"
 SABLON_LINKI = ("https://n8n.io/workflows/4640-competitor-price-monitoring-with-web-scrapinggoogle-sheets"
                 "-and-telegram/")
@@ -82,6 +86,8 @@ def ana_akis() -> dict:
     d = [
         dugum("Günlük Tetikleyici (09:00)", "n8n-nodes-base.scheduleTrigger", 1.2, (0, 300),
               {"rule": {"interval": [{"triggerAtHour": 9}]}}),
+        # Test için: arayüzde "Execute workflow" ve CLI'da `n8n execute` bu tetikleyiciyle çalışır.
+        dugum("Elle Çalıştır (test)", "n8n-nodes-base.manualTrigger", 1, (0, 480), {}),
         dugum("Ayarlar", "n8n-nodes-base.set", 3.4, (220, 300), {
             "assignments": {"assignments": [
                 {"id": dugum_id("a1"), "name": "taban_url", "type": "string",
@@ -176,6 +182,7 @@ def ana_akis() -> dict:
 
     baglantilar = {
         "Günlük Tetikleyici (09:00)": {"main": [[b("Ayarlar")]]},
+        "Elle Çalıştır (test)": {"main": [[b("Ayarlar")]]},
         "Ayarlar": {"main": [[b("Sayfa 1'i Çek")]]},
         "Sayfa 1'i Çek": {"main": [[b("Sayfa Listesini Oluştur")], [b("Hata Mesajını Hazırla")]]},
         "Sayfa Listesini Oluştur": {"main": [[b("Tüm Sayfaları Çek")]]},
@@ -193,6 +200,7 @@ def ana_akis() -> dict:
         "Hata Bildirimi Gönder": {"main": [[b("Akışı Hatayla Bitir")]]},
     }
     return {
+        "id": ANA_AKIS_ID,
         "name": "Laptop Fiyat Takibi — webscraper.io → Google Sheets + E-posta",
         "nodes": d,
         "connections": baglantilar,
@@ -202,7 +210,8 @@ def ana_akis() -> dict:
             "timezone": "Europe/Istanbul",
             "saveDataErrorExecution": "all",
             "saveDataSuccessExecution": "all",
-            # hata-workflow.json içe aktarıldıktan sonra Workflow Settings → Error Workflow'dan seçilir.
+            # Beklenmeyen hatalarda hata-workflow.json çalışır (o da içe aktarılmış olmalı).
+            "errorWorkflow": HATA_AKISI_ID,
         },
         "pinData": {},
         "meta": {"templateCredsSetupCompleted": False},
@@ -225,6 +234,7 @@ def hata_akisi() -> dict:
         }),
     ]
     return {
+        "id": HATA_AKISI_ID,
         "name": "Hata Bildirimi (Error Workflow)",
         "nodes": d,
         "connections": {"Error Trigger": {"main": [[{"node": "Hata E-postası", "type": "main", "index": 0}]]}},
@@ -253,7 +263,7 @@ def dogrula(akis: dict) -> None:
     hedefler = {h["node"] for c in akis["connections"].values() for cikis in c["main"] for h in cikis}
     for n in akis["nodes"]:
         if n["type"] in ("n8n-nodes-base.stickyNote", "n8n-nodes-base.scheduleTrigger",
-                         "n8n-nodes-base.errorTrigger"):
+                         "n8n-nodes-base.manualTrigger", "n8n-nodes-base.errorTrigger"):
             continue
         assert n["name"] in hedefler, f"kopuk düğüm: {n['name']}"
 
