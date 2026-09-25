@@ -32,7 +32,7 @@ https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan olusturdum
 
 > **Soru:** Teslim e-postası nasıl gitsin? (Son teslim 14:00, şu an ~11:50.)
 > Seçenekler: *İnceledim, gönder* · *Gmail'de taslak oluştur* · *Önce değişiklik isteyeceğim*
-> **Cevabım:** `Gmail'de taslak oluştur` (teslim e-postasını kontrol edip kendim gönderdim)
+> **Cevabım:** `Gmail'de taslak oluştur` (Claude Code taslağı hazırladı; e-postayı kontrol edip kendim gönderiyorum)
 
 ---
 
