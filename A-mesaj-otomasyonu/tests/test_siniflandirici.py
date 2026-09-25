@@ -124,5 +124,37 @@ class DegerlendirmedenGelenler(unittest.TestCase):
                     self.assertIn(siniflandir(o["mesaj"]).konu, HASSAS_KONULAR)
 
 
+class YanlisAlarm(unittest.TestCase):
+    """"Kullanım sonrası şikâyet" kuralının masum sorulara uygulanmaması (üçüncü kontrol, bkz. README).
+
+    Kuralın ilk sürümü bunların 6'sını yüksek öncelikli sağlık şikâyeti sayıyordu.
+    """
+
+    MASUM = {
+        "Sipariş verdikten sonra elime ne zaman ulaşır?": None,  # diger + devret: güvenli taraf
+        "Siparişim 3 gün sonra elime ulaşır mı?": "siparis-durumu",
+        "Kargoya verdikten sonra elime kaç günde geçer?": None,
+        "Yüz kremini sürdükten sonra makyaj yapabilir miyim?": "urun-sorusu",
+        "Saç maskesini yıkadıktan sonra kurutabilir miyim?": "urun-sorusu",
+        "Kargo firması yüzünden paketim 2 gün sonra geldi ama sorun yok, teşekkürler": None,
+    }
+
+    def test_masum_sonra_sorulari_saglik_sikayeti_sayilmaz(self):
+        for metin, beklenen in self.MASUM.items():
+            with self.subTest(metin=metin):
+                konu = siniflandir(metin).konu
+                self.assertNotEqual(konu, "istenmeyen-etki")
+                if beklenen:
+                    self.assertEqual(konu, beklenen)
+
+    def test_kisinin_kendi_vucudu_gecince_kural_calismaya_devam_eder(self):
+        # Belirti kelimesi listede yok ("garip bir his"); yakalayan yalnızca yapısal kural.
+        for metin in ("Serumdan sonra cildimde garip bir his var",
+                      "Maskeyi kullandım, sonra yüzüm karıncalandı",
+                      "After applying it my skin feels strange"):
+            with self.subTest(metin=metin):
+                self.assertEqual(siniflandir(metin).konu, "istenmeyen-etki")
+
+
 if __name__ == "__main__":
     unittest.main()

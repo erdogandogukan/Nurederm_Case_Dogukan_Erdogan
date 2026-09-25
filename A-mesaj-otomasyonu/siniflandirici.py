@@ -54,12 +54,16 @@ ISTENMEYEN_ETKI = _derle([
     r"\bkasinti", r"\bkizarik", r"\bsac\w*\s+(\w+\s+)?dokul",
 ])
 
-# Yapısal kural: "...dan/den sonra" + vücut bölgesi → kullanım sonrası şikâyet. Belirti kelimesi
-# listede olmasa da mesaj insana gider. Yanlış pozitifi ("kremi yüzüme sürdükten sonra ne kadar
-# beklemeliyim?") de insana gider: hata güvenli tarafta kalır, tersi değil.
+# Yapısal kural: "...dan/den sonra" (ya da "sonra") + kişinin kendi vücut bölgesi → kullanım sonrası
+# şikâyet. Belirti kelimesi listede olmasa da mesaj insana gider. Kalan yanlış pozitif ("kremi yüzüme
+# sürdükten sonra ne kadar beklemeliyim?") de insana gider: hata güvenli tarafta kalır, tersi değil.
 KULLANIM_SONRASI = re.compile(r"\w+(dan|den|tan|ten)\s+sonra|\bsonra\b|\bafter (using|applying)\b")
-VUCUT = re.compile(r"\b(yuz|cilt|goz|dudak|sac|deri|vucud|boyn|boyun|kafa|elim|ellerim|"
-                   r"face|skin|eyes?|lips?|hair)\w*")
+# Vücut bölgesi yalnızca birinci şahıs iyelik ekiyle ("yüzüm", "cildimde", "saçlarım") ya da
+# "vücudunda" gibi çekimli hâliyle sayılır. Eki şart koşmayan önceki sürüm "Sipariş verdikten sonra
+# elime ne zaman ulaşır?" (teslimat deyimi), "kargo yüzünden" (sebep), "yüz kremi", "saç maskesi"
+# (ürün adı) gibi masum soruları yüksek öncelikli sağlık şikâyeti sayıyordu (10 masum sorudan 6'sı).
+VUCUT = re.compile(r"\b(yuz|cild|goz|gozler|dudag|dudaklar|sac|saclar|vucud|boyn|eller|koltuk alt)"
+                   r"(im|um)\w*|\bkafam\w*|\bvucud\w*|\bmy (face|skin|eyes?|lips?|hair|scalp)\b")
 
 IADE_SIKAYET = _derle([
     r"\biade", r"\bsikayet", r"\bgeri (gonder|odeme|iade)", r"\bdegisim\b", r"\bdegistir",
