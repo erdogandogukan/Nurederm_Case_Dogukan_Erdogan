@@ -1,10 +1,12 @@
 # Bölüm A — Claude Code'a yazdığım promptlar
 
-**Araç:** Claude Code masaüstü uygulaması, model Claude Opus 5.5. Case'in iki bölümünü de **tek bir oturumda** yaptım. Bu yüzden ilk prompt iki dosyada da var.
+**Araç:** Claude Code masaüstü uygulaması, model Claude Opus 5.5. İki oturum kullandım:
+- **Oturum 1 (11:06–11:50):** Case'in iki bölümünün ilk tam sürümü. İki bölüm aynı oturumda yapıldı, bu yüzden ilk prompt iki dosyada da var.
+- **Oturum 2 (11:54–12:13):** Teslimden önce, önceki konuşmayı bilmeyen yeni bir oturumda bağımsız inceleme ve düzeltmeler ([aşağıda](#oturum-2--bağımsız-inceleme)).
 
 **Kural:** Promptlar silinmeden, düzeltilmeden (yazım hataları dahil) ve sırasıyla aşağıda. Saatler yaklaşıktır.
 
-**Neden `/export` çıktısı yok?** Oturum dökümünde Gmail aramasının ham sonuçları da var: case ile ilgisi olmayan başka e-postalarımın konu ve özetleri. Bu yüzden ham dökümü herkese açık depoya koymadım. Promptlarımı buraya birebir kopyaladım. Yapay zekânın yaptığı işleri ve karşılaştığı hataları da aşağıya özet olarak ekledim.
+**Neden `/export` çıktısı yok?** Oturum dökümlerinde case ile ilgisi olmayan kişisel veriler de var: Gmail aramasının ham sonuçları, başka e-postalarımın konu ve özetleri. Bu yüzden ham dökümleri herkese açık depoya koymadım. Promptlarımı buraya birebir kopyaladım. Yapay zekânın yaptığı işleri ve karşılaştığı hataları da aşağıya özet olarak ekledim.
 
 ---
 
@@ -58,3 +60,28 @@ Bu bölüm prompt değil. Yapay zekânın işi nasıl parçaladığını ve hata
    - **Çözüm:** Proje `C:\Users\erdog\Nurederm_Case_Dogukan_Erdogan` klasörüne taşındı. **29 testin hepsi geçti.**
 8. **Testin kendisini test etme:** Hepsi ilk seferde geçince sipariş sahipliği kontrolü bilerek devre dışı bırakıldı (`ayni_musteri` her zaman True döndü). **5 test kırmızıya döndü.** Yani sızıntı testleri gerçekten koruma sağlıyor.
 9. Küçük commit'lerle GitHub'a gönderildi.
+
+---
+
+## Oturum 2 — bağımsız inceleme
+
+İlk sürüm 11:50'de bitti. Teslimden önce, önceki konuşmayı bilmeyen **yeni bir Claude Code oturumu** açıp işi baştan inceletip eksiklerini tamamlattım. İnceleme iki bölümü birlikte kapsadığı için bu prompt [B-n8n.md](B-n8n.md) dosyasında da var.
+
+## Prompt 5 · ≈11:54 (Oturum 2'nin ilk promptu)
+
+```
+erdinc beyden case geldi ben de baska bir sohbette sana yaptirdim suan ama emin degilim nasil olcak diye suan case repomda githubda https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan  . Mangolabdaki gibi case imin cok iyi olmasini istiyorum ilk 5 te olmam lazim anlayacagin.
+Eger eksik veya fazlalik bir sey goruyorsan duzeltelim cok profosyonel olmasi lazim. Buyuk ihtimal caseleri elleriyle kontrol etmeyebilirler yapay zekaya case i mi atip puanlatirlar gibi. Cok profosyonel olmasi istiyorum anlayacagin. Bir de mesela neyi bitiremedin diye bolum acmis onlari yapabiliyorsak yapalim readme yi de duzenleyelim eger turkce olmasini uygun goruyorsan turkce kalsin ama dedigim gibi en iyi olsun
+```
+
+## Claude Code'un Oturum 2'de Bölüm A için yaptıkları (özet süreç günlüğü)
+
+1. **Brief'e göre baştan denetim:** Case e-postası ve `case-brief.md` yeniden okundu. README'deki komutlar olduğu gibi çalıştırıldı: `main.py`, 29 birim testi, B'nin 9 Node testi ve `workflow.json` doğrulayıcısı. Hepsi geçti. Kod satır satır okundu.
+2. **Denetlenmemiş bir iddia bulundu:** README, "kalıplara uymayan yeni bir ifade `diger` + devret'e düşer (güvenli taraf)" diyordu, ama bu hiç ölçülmemişti. Farklı yazımlarla (Türkçe karaktersiz, İngilizce, çok niyetli, belirti adı geçmeyen) **50 mesajlık etiketli bir geliştirme seti** yazıldı ve kurallara dokunmadan ölçüldü.
+   - **Sonuç: 37/50 (%74) ve 18 hassas mesajın 6'sı otomatik cevaplanıyordu.** Örnek: "Kremi sürdükten sonra yüzümde kabarcıklar çıktı" → *urun-sorusu*. Mesajlar kalıplara uymuyor değildi, *yanlış* kalıba uyuyordu (ürün adı geçiyordu). Yani README'deki cümle yanlıştı.
+   - Bu ilk ölçüm, **kurallar değişmeden önce** commit'lendi (`2b481da`). Aynı commit'e 24 mesajlık, henüz çalıştırılmamış bir **test seti** de kondu.
+3. **Hata:** Kural değişikliklerini topluca uygulayan ilk Python betiği, düz (raw olmayan) string kullandığı için `\w` ve `\b` kaçış karakterlerini bozdu. Betikteki `assert` eşleşmenin bulunamadığını yakaladı ve dosyaya hiçbir şey yazılmadı. Değişiklikler tek tek yapıldı.
+4. **Düzeltmeler, tek tek ezber yerine genel kurallar olarak yapıldı** (`485fd82`): *"…dan/den sonra" + vücut bölgesi* → kullanım sonrası şikâyet; kaçan şikâyet/belirti kalıpları; "bedava" tek başına spam değil; soru olmayan genel "ürün" bahsi ürün sorusu değil. Geliştirme seti 50/50 oldu (görülmüş set, iyimser). **Orijinal 15 mesajın `talepler.json` çıktısı değişmedi** (diff boş). 6 yeni test eklendi.
+5. **Test seti bir kez çalıştırıldı:** 18/24 (%75). 12 hassas mesajın 11'i insana gidiyor, 1'i otomatik cevaplanıyor ("Şişe kargoda patlamış, her yer krem olmuş" → *urun-sorusu*). Bu tek açık için genel bir kural, ölçümden **sonra** eklendi (`343f6b3`): soru olmayan cümle otomatik ürün cevabı almaz. Bunun ölçümden sonra yapıldığı README'de açıkça yazıyor. Kalan 6 yanlış konunun hepsi `diger` + devret ile insana gidiyor; test setine göre kural yazılmadı.
+6. **Mutasyon testi tekrarlandı:** `ayni_musteri` her zaman `True` döndürecek şekilde bozuldu → 5 test kırmızı. Dosya geri alındı.
+7. **Teslim e-postası taslağı:** Repo linkinin çıplak link yerine `google.com/url?q=…` yönlendirmesi olarak yazıldığı görüldü. Taslak düzeltildi. E-postayı kontrol edip kendim gönderiyorum.
