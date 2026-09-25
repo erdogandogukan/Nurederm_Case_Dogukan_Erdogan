@@ -8,6 +8,7 @@ ile test/kod-testi.mjs'de Node.js üzerinde test edilen kod birebir aynıdır.
 from __future__ import annotations
 
 import json
+import sys
 import uuid
 from pathlib import Path
 
@@ -269,6 +270,8 @@ def dogrula(akis: dict) -> None:
 
 
 if __name__ == "__main__":
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8")  # Windows konsolunda Türkçe karakterler bozulmasın
     for dosya, akis in (("workflow.json", ana_akis()), ("hata-workflow.json", hata_akisi())):
         dogrula(akis)
         (KOK / dosya).write_text(json.dumps(akis, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
