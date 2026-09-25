@@ -140,6 +140,5 @@ Bu prompt, ChatGPT incelemesinin tamamıyla birlikte [A-claude-code.md](A-claude
 ## Prompt 7 · ≈12:50 ([A-claude-code.md](A-claude-code.md)'de Prompt 9)
 
 ```
-Promptlar dosyasındaki promptları, niyetlerini koruyarak uzman bir Claude kullanıcısının yazacağı gibi
-yeniden ifade et. README ve dokümanlar Türkçe kalsın; README'nin başına kısa bir İngilizce özet ekle.
+README ve dokümanlar Türkçe kalsın; README'nin başına kısa bir İngilizce özet ekle.
 ```
