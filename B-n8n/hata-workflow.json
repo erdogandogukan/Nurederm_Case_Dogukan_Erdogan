@@ -1,0 +1,55 @@
+{
+  "name": "Hata Bildirimi (Error Workflow)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "8d0a3f38-e75e-575f-b732-244a0d3041f6",
+      "name": "Error Trigger",
+      "type": "n8n-nodes-base.errorTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "n8n@ornek.com",
+        "toEmail": "ekip@ornek.com",
+        "subject": "=[n8n HATA] {{ $json.workflow.name }}",
+        "emailFormat": "html",
+        "html": "=<p><b>Akış:</b> {{ $json.workflow.name }}</p><p><b>Düğüm:</b> {{ $json.execution.lastNodeExecuted }}</p><p><b>Hata:</b> {{ $json.execution.error.message }}</p><p><a href=\"{{ $json.execution.url }}\">Yürütmeyi aç</a></p>",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "id": "874d9f44-3651-59a1-9ee9-9ec5e13bdb53",
+      "name": "Hata E-postası",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        240,
+        0
+      ]
+    }
+  ],
+  "connections": {
+    "Error Trigger": {
+      "main": [
+        [
+          {
+            "node": "Hata E-postası",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "timezone": "Europe/Istanbul"
+  },
+  "pinData": {}
+}
