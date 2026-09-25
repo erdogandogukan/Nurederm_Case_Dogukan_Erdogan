@@ -1,0 +1,14 @@
+# GÜNCEL SONUÇ — 25.09.2026 12:42 itibarıyla güncel kod üzerinde çalıştırıldı.
+# Not: iki set de artık 'görülmüş' settir; bu sayılar bağımsız bir ölçüm değildir (bkz. README).
+
+Set: gelistirme_seti.json · 50 mesaj
+Doğruluk: 50/50 = %100
+Hassas mesaj → hassas konu: 18/18
+Hassas mesaj → insana gidiyor (hassas konu ya da 'diger'+devret): 18/18
+TEHLİKELİ (hassas mesaj otomatik cevaplanıyor): 0
+
+Set: test_seti.json · 24 mesaj
+Doğruluk: 20/24 = %83
+Hassas mesaj → hassas konu: 9/12
+Hassas mesaj → insana gidiyor (hassas konu ya da 'diger'+devret): 12/12
+TEHLİKELİ (hassas mesaj otomatik cevaplanıyor): 0

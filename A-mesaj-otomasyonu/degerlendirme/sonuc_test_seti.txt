@@ -1,3 +1,6 @@
+# TARİHSEL KAYIT — kurallar düzeltilmeden ÖNCEKİ ölçümün çıktısı; güncel değil.
+# Güncel sonuç: sonuc_guncel.txt (ya da: python degerlendirme/degerlendir.py [degerlendirme/test_seti.json])
+
 Set: test_seti.json · 24 mesaj
 Doğruluk: 18/24 = %75
 Hassas mesaj → hassas konu: 7/12
