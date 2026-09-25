@@ -2,6 +2,19 @@
 
 **Araç:** Claude Code masaüstü uygulaması, model Claude Opus 5.5. İlk sürümü Bölüm A ile **aynı oturumda** yaptım (Oturum 1). İlk prompt iki bölümü birlikte kapsıyordu. Teslimden önce ikinci bir oturumda iki bölümü birlikte inceledim ([Oturum 2](#oturum-2--bağımsız-inceleme-iki-bölüm-için-ortak)). Promptlar silinmeden, düzeltilmeden ve sırasıyla aşağıda (bkz. [A-claude-code.md](A-claude-code.md)).
 
+
+## Özet: işi nasıl yönettim
+
+| # | Ne istedim | Bölüm B'deki sonuç |
+|---|---|---|
+| 1 | Case'i eksiksiz birlikte yapmak (iki bölüm için ortak) | Şablon #4640 seçildi ve incelendi; Code düğümleri Node.js'te, akışın kendisi gerçek n8n'de test edildi |
+| 2 | B'de Google Sheets + e-posta kullanmak | Tablo ve bildirim kanalı bu seçime göre kuruldu |
+| 3 | Yeni bir oturumda bağımsız denetim | `row_number` hatası düzeltildi, içe aktarım notu ve editör ekran görüntüsü eklendi |
+| 4–5 | İkinci oturumun işini kontrol ettirmek; e-postanın yapay zekâ tarafından gönderilmemesi | Değişiklikler yerinde bulundu |
+| 6 | ChatGPT incelemesini doğrulatmak | Sayfalama bulunamazsa tek sayfanın tam tarama sayılması riski doğrulandı; sitedeki toplamla karşılaştıran eksiksizlik kontrolü eklendi |
+
+Promptların birebir metni aşağıda (brief gereği değiştirilmeden).
+
 ---
 
 ## Prompt 1 · ≈11:06 (iki bölüm için ortak)
@@ -86,3 +99,24 @@ sakin gonderme maili
 
 1. `row_number` düzeltmesi ve testi, arayüzden içe aktarımda Error Workflow notu ve UTF-8 çıktı değişikliği okundu. Hepsi yerinde bulundu. B'nin 9 Node testi yeniden çalıştırıldı ve geçti.
 2. Ekran görüntüsü kontrol edildi. Düğümler n8n editöründe doğru tanınıyor (örn. "read: sheet", "appendOrUpdate: sheet"). Kırmızı üçgenler bağlanmamış credential'lar. Kozmetik bir not: "Sayfa 1'i Çek"ten çıkan hata çizgisi, "Tüm sayfaları gez" notunun üzerinden geçiyor.
+
+---
+
+## Harici inceleme (ChatGPT) — bulguların doğrulanması
+
+## Prompt 6 · ≈12:31 ([A-claude-code.md](A-claude-code.md)'de Prompt 8; metin orada birebir)
+
+Bu prompt, yapıştırdığım ChatGPT incelemesiyle birlikte [A-claude-code.md](A-claude-code.md) dosyasında
+birebir duruyor. Bölüm B ile ilgili kısmı:
+
+```
+* B’de mevcut sitede yeni arıza bulmadım. Önceki koşullu risk sürüyor: sayfalama bağlantısı bulunmazsa akış tek sayfayı tam tarama sayabilir ve yanlış “ürün kaldırıldı” bildirimi üretebilir.
+```
+
+## Claude Code'un bu turda Bölüm B için yaptıkları
+
+1. **Risk doğrulandı:** `Sayfa Listesini Oluştur` sayfalama bağlantısı bulamazsa son sayfayı 1 sayıyor. Bu durumda 6 ürünlük tarama önceki hiçbir kontrole takılmıyordu (boş sayfa ya da hata yok).
+2. **Düzeltme:** `Ürünleri Ayrıştır`, ayrıştırdığı ürün sayısını sitenin 1. sayfada yazdığı toplamla (`<p class="item-count">117 items</p>`) karşılaştırıyor. Sayılar tutmazsa ya da toplam okunamazsa `saglikli=false` oluyor ve akış mevcut hata dalına gidiyor. Akışın yapısı değişmedi; ekran görüntüsü hâlâ geçerli.
+3. **Test:** Canlı sitenin 1. sayfasından sayfalama bağlantıları silinip akış çalıştırıldı. 1 sayfa ve 6 ürün taranıyor, sonuç "sitede 117 ürün yazıyor, 6 ürün ayrıştırıldı" → sağlıksız. B'nin 10 Node testi geçiyor.
+4. `workflow_olustur.py` doğrulayıcısı sadece tek tırnaklı `$('…')` referanslarını denetliyordu. Adında kesme işareti olan düğüm (`$("Sayfa 1'i Çek")`) de denetlensin diye genişletildi.
+5. **Gerçek n8n'de yeniden çalıştırıldı:** `sitedeki_urun_sayisi: 117`, `urun_sayisi: 117`, `saglikli: true`.

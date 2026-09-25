@@ -8,6 +8,27 @@
 
 **Neden `/export` çıktısı yok?** Oturum dökümlerinde case ile ilgisi olmayan kişisel veriler de var: Gmail aramasının ham sonuçları, başka e-postalarımın konu ve özetleri. Bu yüzden ham dökümleri herkese açık depoya koymadım. Promptlarımı buraya birebir kopyaladım. Yapay zekânın yaptığı işleri ve karşılaştığı hataları da aşağıya özet olarak ekledim.
 
+
+## Özet: işi nasıl yönettim
+
+Aşağıdaki tablo, promptlarımın ne istediğini ve her birinin sonucunu özetliyor. Promptların birebir
+metni tablonun altında; brief onları *olduğu gibi* istediği için metinlere dokunulmadı.
+
+| # | Ne istedim | Sonuç |
+|---|---|---|
+| 1 | Case'i e-postamdan bulup iki bölümü eksiksiz birlikte yapmak | Case ve ekleri bulundu; iş parçalara ayrıldı, veri koddan önce doğrulandı |
+| 2 | İki karar: repoyu ben açayım; B'de Google Sheets + e-posta | Teslim yöntemi ve B'nin tasarımı netleşti |
+| 3 | Repo linkini vermek | Küçük commit'lerle push |
+| 4 | Teslim e-postası taslak olsun, ben göndereyim | Gmail taslağı hazırlandı |
+| 5 | Yeni bir oturumda repoyu baştan, "yapay zekâyla puanlanabilir" gözle denetlemek | Sınıflandırıcı 74 etiketli mesajla ölçüldü; hassas mesaj kaçakları bulunup düzeltildi; `row_number` hatası, ekran görüntüsü |
+| 6 | İkinci oturumun düzeltmelerini ilk oturuma kontrol ettirmek | Yeni bir kuralın masum soruları sağlık şikâyeti saydığı bulundu ve düzeltildi; e-posta linki sorunu tespit edildi |
+| 7 | E-postanın yapay zekâ tarafından gönderilmemesi | Gönderilmedi; gönderimi ben yapıyorum |
+| 8 | ChatGPT incelemesinin bulgularını doğrulatmak | Dört bulgunun dördü doğrulandı ve düzeltildi (bkz. aşağıdaki günlük) |
+
+Prompt 8'de promptların daha profesyonel görünecek şekilde yeniden yazılmasını da istedim. Brief promptların
+*silmeden, sırasıyla, olduğu gibi* eklenmesini istediği için metinler değiştirilmedi. Bunun yerine bu özet
+eklendi.
+
 ---
 
 ## Prompt 1 · ≈11:06
@@ -117,3 +138,56 @@ sakin gonderme maili
    - Deneme için fazla taslağa temiz bir link yazıldı. Gmail bağlantısı hem HTML'deki linki hem düz metindeki çıplak URL'yi yine yönlendirmeye çevirdi. Yani bu araçla temiz link yazılamıyor.
    - Fazla taslağın konusu "[SİLİN - GÖNDERMEYİN]" yapıldı (taslak silmek kalıcı olduğu için yapay zekâ yapmadı). Linki gönderimden önce Gmail'de elle yapıştırıyorum.
    - E-posta yapay zekâ tarafından gönderilmedi.
+
+---
+
+## Harici inceleme (ChatGPT) — bulguların doğrulanması
+
+Repoyu ChatGPT'ye de inceletip bulgularını Claude Code'a kontrol ettirdim. İstek iki bölümü birlikte kapsıyor;
+bu yüzden prompt [B-n8n.md](B-n8n.md) dosyasında da var.
+
+## Prompt 8 · ≈12:31
+
+```
+promptalari degistirelim boyle hic profosyonel durmuyor sen kendin promplartlar belirle ona gore yaz. bir de chatgpt ye attim repoyu
+
+[yapıştırdığım ChatGPT incelemesi]
+Güncel `0137b05`[ sürümünü](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/commit/0137b05aff08a4499a56741cbf4a467a9c6dadd1) inceledim. Öncekinden daha iyi: README’de brief karşılık tablosu var, ikinci inceleme ve n8n ekran görüntüsü eklenmiş, 36 birim testi geçiyor. Verilen 15 mesajın üretilen çıktısı değişmemiş. Yine de önemli bir hata sürüyor.
+
+* Hassas mesaj kaçabiliyor. “Kremi sürünce yüzümde yara çıktı, ne yapmalıyım?” ve “Krem şişesi kargoda patlamış, ne yapmalıyım?” örneklerini güncel işleyicide denedim. İkisi de `urun-sorusu`, `devret: false` çıkıyor. [Sınıflandırıcıdaki ürün sorusu kuralı](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/blob/0137b05aff08a4499a56741cbf4a467a9c6dadd1/A-mesaj-otomasyonu/siniflandirici.py#L242) ve [işleyicinin devir kararı](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/blob/0137b05aff08a4499a56741cbf4a467a9c6dadd1/A-mesaj-otomasyonu/isleyici.py#L325) bunu açıklıyor. Yeni testlerdeki hassas örnekler devredilse de bu iki yeni örnek, güvenliğin henüz genellenmediğini gösteriyor. İlk düzeltilmesi gereken nokta bu.
+* Önceki iki içerik sorunu aynen duruyor: DummyJSON ürünleri [“kataloğumuzdaki”](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/blob/0137b05aff08a4499a56741cbf4a467a9c6dadd1/A-mesaj-otomasyonu/talepler.json#L69) ve [“güncel fiyatlarımız”](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/blob/0137b05aff08a4499a56741cbf4a467a9c6dadd1/A-mesaj-otomasyonu/talepler.json#L97) diye sunuluyor. Ayrıca [uzman dönüşü vaat eden bir mesaj](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/blob/0137b05aff08a4499a56741cbf4a467a9c6dadd1/A-mesaj-otomasyonu/talepler.json#L60) `devret: false`; kargo taslağındaki yer tutucu da aynı durumda.
+* B’de mevcut sitede yeni arıza bulmadım. Önceki koşullu risk sürüyor: [sayfalama bağlantısı bulunmazsa](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/blob/0137b05aff08a4499a56741cbf4a467a9c6dadd1/B-n8n/kod/1-sayfa-listesi.js#L11-L16) akış tek sayfayı tam tarama sayabilir ve yanlış “ürün kaldırıldı” bildirimi üretebilir.
+
+Küçük bir sunum pürüzü de var: [kayıtlı test sonucu](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/blob/0137b05aff08a4499a56741cbf4a467a9c6dadd1/A-mesaj-otomasyonu/degerlendirme/sonuc_test_seti.txt#L1-L5) düzeltme öncesi bir tehlikeli kaçırmayı gösteriyor. README bunun tarihsel ölçüm olduğunu dürüstçe açıklıyor; dosyayı tek başına açan biri güncel sonuç sanabilir.
+[/yapıştırdığım ChatGPT incelemesi]
+
+boyle seyler dedi dogru mu sacmaliyor mu
+```
+
+## Claude Code'un bu turda yaptıkları (özet süreç günlüğü)
+
+1. **Promptların yeniden yazılması isteği:** Yerine getirilmedi. Brief promptların olduğu gibi eklenmesini istiyor ve gerçek promptlar commit geçmişinde zaten duruyor. Bunun yerine dosyaların başına bir özet tablo eklendi.
+2. **ChatGPT bulguları kodla doğrulandı. Dördü de doğru çıktı:**
+   - "Kremi sürünce yüzümde yara çıktı, ne yapmalıyım?" ve "Krem şişesi kargoda patlamış, ne yapmalıyım?" gerçekten `urun-sorusu`, `devret: false` çıkıyordu. Aynı açığın bir varyantı daha bulundu ("Maskeyi uyguladım ve cildim kötü oldu, ne yapayım?").
+   - "Uzmanımız iletecek" diyen taslaklar ve yer tutuculu kargo taslağı `devret: false` idi. Aynı tutarsızlığın bir örneği daha bulundu: bulunan sipariş taslağı "kargo durumunu ayrıca bildireceğiz" diye söz veriyordu.
+   - "Kataloğumuzdaki" ve "güncel fiyatlarımız" ifadeleri, test API'sinin genel mağaza ürünlerini kesin bir katalog gibi sunuyordu.
+   - B'de sayfalama bağlantıları bulunamazsa 6 ürünlük tarama "sağlıklı" sayılıp 111 ürün yanlışlıkla "kaldırıldı" bildirilebilirdi.
+3. **Düzeltmeler (ezber yerine genel kurallar):**
+   - Kişinin kendi vücudu + olay anlatımı → istenmeyen etki. Olay; zarf-fiil, "…dan sonra" ya da geçmiş zaman fiili olabilir.
+   - Hasar fiilleri → iade/şikâyet.
+   - "Ne yapmalıyım" gibi yardım isteyen ifade → otomatik ürün cevabı yok.
+   - Söz veren ya da yer tutucu içeren taslak → devret. Her devrin nedeni not'ta ve özet sayfasında.
+   - Test API ürünleri "sistemimizde bulduğumuz en yakın ürün" diye sunuluyor.
+   - Sipariş taslağındaki söz kaldırıldı.
+   - B'de ayrıştırılan ürün sayısı sitedeki "117 items" ile karşılaştırılıyor.
+   - Eski ölçüm dosyaları "tarihsel" olarak işaretlendi, `sonuc_guncel.txt` eklendi.
+4. **Sonuç:**
+   - 44 test geçiyor (önce 38). Sahiplik kontrolü bozulunca 6 test kırmızı.
+   - Geliştirme seti 50/50. Test seti 20/24; bu artık görülmüş set, bağımsız ölçüm değil.
+   - 15 mesajın 11'i devrediliyor: 2 hassas, 2 sipariş doğrulanamadı, 7 sistemde olmayan bilgi.
+   - B'nin 10 Node testi geçiyor. Güncel akış gerçek n8n'de yeniden çalıştırıldı (117 = 117, sağlıklı).
+5. **Yol boyunca çıkan hatalar:**
+   - Uzun bir Python betiği bash heredoc'unda tırnak yüzünden hiç çalışmadı. Betik dosyaya yazılıp öyle çalıştırıldı.
+   - Betik dosyasının yolu yine Windows'un 260 karakter sınırını aştı. Betikler kısa bir klasöre taşındı.
+   - `isleyici.py` betikle değiştiği için bir düzenleme reddedildi. Dosya yeniden okunup düzenlendi.
+   - Kendi test beklentilerimden biri yanlıştı (#10, sahte API'de arama sonucu yoktu). Sahte API'ye gerçek arama sonucu eklendi.

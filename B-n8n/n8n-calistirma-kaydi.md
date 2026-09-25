@@ -58,3 +58,10 @@ Her iki hata senaryosunda da akış **sessizce "başarılı" bitmedi**.
 
 1. `n8n import:workflow` ilk denemede `SQLITE_CONSTRAINT: NOT NULL constraint failed: workflow_entity.id` hatası verdi. CLI içe aktarımı JSON'da workflow `id` alanı istiyor (arayüzden içe aktarım istemiyor). Sabit id eklendi (`LaptopFiyatTakip`, `hataBildirimAkis`). Hata akışının id'si bilindiği için ana akışın `errorWorkflow` ayarı da doğrudan bağlandı.
 2. `n8n execute` "Missing node to start execution" hatası verdi: CLI, Schedule Trigger'la başlatamıyor. Arayüzde ve CLI'da test için **"Elle Çalıştır (test)"** Manual Trigger'ı eklendi (zamanlanmış tetikleyici aynen duruyor).
+
+## 4) Harici inceleme sonrası yeniden çalıştırma
+
+Eksiksizlik kontrolü eklendikten sonra (`Ürünleri Ayrıştır`, sitedeki "117 items" ile karşılaştırma) güncel
+`workflow.json` yeniden içe aktarılıp çalıştırıldı: `sitedeki_urun_sayisi: 117`, `urun_sayisi: 117`,
+`taranan_sayfa: 20`, `saglikli: true`. Akış yine credential bağlanmamış `Son Durumu Oku` adımında durdu.
+Sayfalama bağlantılarının bulunamadığı durum (6 ürün / 117) Node testinde `saglikli: false` veriyor.
