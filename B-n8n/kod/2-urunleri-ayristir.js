@@ -67,11 +67,23 @@ if (bosSayfalar.length) sorunlar.push(`ürünsüz sayfa(lar): ${bosSayfalar.join
 if (eksikSayfa > 0) sorunlar.push(`${eksikSayfa} sayfanın yanıtı eksik`);
 if (hataliKart > 0) sorunlar.push(`${hataliKart} ürün kartı ayrıştırılamadı`);
 
+// Eksiksizlik kontrolü: site 1. sayfada toplam ürün sayısını yazıyor ("117 items"). Sayfalama
+// bağlantıları bir gün bulunamazsa akış yalnızca 1. sayfayı tarar; bu kontrol olmasaydı 6 ürünlük
+// tarama "sağlıklı" sayılır ve kalan 111 ürün yanlışlıkla "kaldırıldı" diye bildirilirdi.
+const sayfa1Html = String($("Sayfa 1'i Çek").first().json.html || '');
+const sitedekiSayi = Number((sayfa1Html.match(/class="item-count"[^>]*>\s*(\d+)\s*items?/) || [])[1]);
+if (!Number.isFinite(sitedekiSayi) || sitedekiSayi <= 0) {
+  sorunlar.push('sitedeki toplam ürün sayısı okunamadı; taramanın eksiksiz olduğu doğrulanamadı');
+} else if (urunler.size !== sitedekiSayi) {
+  sorunlar.push(`sitede ${sitedekiSayi} ürün yazıyor, ${urunler.size} ürün ayrıştırıldı`);
+}
+
 return [{
   json: {
     tarih,
     calisma_zamani: simdi.toISOString(),
     beklenen_sayfa: beklenenSayfa,
+    sitedeki_urun_sayisi: Number.isFinite(sitedekiSayi) ? sitedekiSayi : null,
     taranan_sayfa: sayfaCiktilari.length - hataliSayfalar.length,
     urun_sayisi: urunler.size,
     // Eksik tarama "sağlıklı" sayılmaz: yarım veriyle karşılaştırma yapılırsa

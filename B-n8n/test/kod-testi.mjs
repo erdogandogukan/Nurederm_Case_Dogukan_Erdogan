@@ -13,9 +13,11 @@ const kod = (dosya) => readFileSync(path.join(KOK, 'kod', dosya), 'utf8');
 function calistir(dosya, girdi, dugumler = {}) {
   const ogeler = (liste) => ({ all: () => liste, first: () => liste[0] });
   const fn = new Function('$input', '$', kod(dosya));
+  // Verilmezse "Sayfa 1'i Çek" çıktısı olarak ilk girdi öğesi kullanılır (sentetik testler için).
+  const tum = { "Sayfa 1'i Çek": girdi.slice(0, 1), ...dugumler };
   return fn(ogeler(girdi), (ad) => {
-    if (!(ad in dugumler)) throw new Error(`Bilinmeyen düğüm referansı: ${ad}`);
-    return ogeler(dugumler[ad]);
+    if (!(ad in tum)) throw new Error(`Bilinmeyen düğüm referansı: ${ad}`);
+    return ogeler(tum[ad]);
   });
 }
 
@@ -50,8 +52,10 @@ const kartHtml = (id, ad, fiyat, yorum) => `<div class="card thumbnail"><h4 clas
 
 // --- 1) Canlı site: tüm sayfalar ---------------------------------------------
 let tarama;
+let canliSayfa1;
 await test('canlı site: sayfa sayısı bulunur, tüm sayfalar gezilir, fiyatlar sayıya çevrilir', async () => {
   const sayfa1 = await getir(AYAR[0].json.taban_url);
+  canliSayfa1 = sayfa1;
   const sayfalar = calistir('1-sayfa-listesi.js', [{ json: { html: sayfa1 } }], { Ayarlar: AYAR });
   assert.equal(sayfalar.length, 20, 'sayfa sayısı');
   const ciktilar = [];
@@ -60,11 +64,12 @@ await test('canlı site: sayfa sayısı bulunur, tüm sayfalar gezilir, fiyatlar
     await new Promise((r) => setTimeout(r, 150)); // siteye nazik ol
   }
   const [ozet] = calistir('2-urunleri-ayristir.js', ciktilar, {
-    Ayarlar: AYAR, 'Sayfa Listesini Oluştur': sayfalar,
+    Ayarlar: AYAR, 'Sayfa Listesini Oluştur': sayfalar, "Sayfa 1'i Çek": [{ json: { html: sayfa1 } }],
   });
   tarama = ozet.json;
   assert.equal(tarama.saglikli, true, tarama.sorunlar.join('; '));
-  assert.equal(tarama.urun_sayisi, 117, 'sitede "117 items" yazıyor');
+  assert.equal(tarama.sitedeki_urun_sayisi, 117, 'sitede "117 items" yazıyor');
+  assert.equal(tarama.urun_sayisi, 117);
   for (const u of tarama.urunler) {
     assert.equal(typeof u.fiyat, 'number');
     assert.ok(Number.isFinite(u.fiyat) && u.fiyat > 0, `${u.ad}: ${u.fiyat}`);
@@ -86,6 +91,21 @@ if (!tarama) {
 }
 
 // --- 2) Ayrıştırma kenar durumları ---------------------------------------------
+await test('sayfalama bağlantıları bulunamazsa tek sayfa tam tarama sayılmaz (harici inceleme)', () => {
+  // Sayfa 1'in HTML'inden sayfalama bağlantıları silinir: akış yalnızca 1. sayfayı tarar.
+  const sayfa1 = (canliSayfa1 || `<p class="item-count">117 items</p>`
+    + [1, 2, 3, 4, 5, 6].map((i) => kartHtml(i, `L${i}`, '$500.00', 1)).join(''))
+    .replace(/href="[^"]*\?page=\d+"/g, 'href="#"');
+  const sayfalar = calistir('1-sayfa-listesi.js', [{ json: { html: sayfa1 } }], { Ayarlar: AYAR });
+  assert.equal(sayfalar.length, 1);
+  const [o] = calistir('2-urunleri-ayristir.js', [{ json: { html: sayfa1 } }], {
+    Ayarlar: AYAR, 'Sayfa Listesini Oluştur': sayfalar, "Sayfa 1'i Çek": [{ json: { html: sayfa1 } }],
+  });
+  assert.equal(o.json.urun_sayisi, 6);
+  assert.equal(o.json.saglikli, false);
+  assert.match(o.json.sorunlar.join(), /sitede 117 ürün yazıyor, 6 ürün ayrıştırıldı/);
+});
+
 await test('fiyat: "$1,139.54" → 1139.54 (binlik virgül), HTML varlıkları çözülür', () => {
   const html = kartHtml(7, 'Asus &quot;Pro&quot; 15.6&quot;', '$1,139.54', 12);
   const [o] = calistir('2-urunleri-ayristir.js', [{ json: { html } }], {

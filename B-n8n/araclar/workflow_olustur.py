@@ -255,10 +255,25 @@ def dogrula(akis: dict) -> None:
         for cikis in cikislar["main"]:
             for hedef in cikis:
                 assert hedef["node"] in adlar, f"bağlantı hedefi yok: {hedef['node']}"
-    # $('Düğüm Adı') referansları gerçekten var olan düğümlere mi işaret ediyor?
-    metin = json.dumps(akis, ensure_ascii=False)
+    # $('Düğüm Adı') / $("Düğüm Adı") referansları gerçekten var olan düğümlere mi işaret ediyor?
+    # (Adında kesme işareti olan düğüm, örn. "Sayfa 1'i Çek", çift tırnakla çağrılıyor.)
     import re
-    for ref in set(re.findall(r"\$\('([^']+)'\)", metin)):
+
+    def metinler(o):
+        if isinstance(o, str):
+            yield o
+        elif isinstance(o, dict):
+            for v in o.values():
+                yield from metinler(v)
+        elif isinstance(o, list):
+            for v in o:
+                yield from metinler(v)
+
+    ham = "\n".join(metinler(akis["nodes"]))
+    refler = re.findall(r"\$\('([^']+)'\)", ham) + re.findall(r'\$\("([^"]+)"\)', ham)
+    if "$(" in ham:
+        assert refler, "düğüm referansları okunamadı (doğrulayıcı bozuk olabilir)"
+    for ref in set(refler):
         assert ref in adlar, f"var olmayan düğüme referans: {ref}"
     # Tetikleyici dışındaki her işlem düğümüne bir bağlantı girmeli (kopuk düğüm olmasın).
     hedefler = {h["node"] for c in akis["connections"].values() for cikis in c["main"] for h in cikis}
