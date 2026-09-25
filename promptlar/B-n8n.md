@@ -1,8 +1,6 @@
-# Bölüm B — n8n akışı için yapay zekâ aracına verdiğim promptlar
+# Bölüm B — n8n akışı için yapay zekâ aracına yazdığım promptlar
 
-**Araç:** Claude Code masaüstü uygulaması, model Claude Opus 5.5. İlk sürümü Bölüm A ile **aynı oturumda** yaptım (Oturum 1). İlk prompt iki bölümü birlikte kapsıyordu. Teslimden önce ikinci bir oturumda iki bölümü birlikte inceledim ([Oturum 2](#oturum-2--bağımsız-inceleme-iki-bölüm-için-ortak)). Promptlar sırasıyla aşağıda (bkz. [A-claude-code.md](A-claude-code.md)).
-
-**Not:** Aşağıdaki promptlar, oturumlar sırasında yazdığım kısa mesajların niyeti korunarak sonradan netleştirilmiş ve yapılandırılmış (yeniden ifade edilmiş) hâlidir; yeni talimat eklenmedi. Orijinal metinler bu dosyanın önceki sürümlerinde, git geçmişinde değiştirilmeden duruyor (ör. commit `5b2e8dc`). Saatler yaklaşıktır.
+**Araç:** Claude Code masaüstü uygulaması, model Claude Opus 5.5. İlk sürümü Bölüm A ile **aynı oturumda** yaptım (Oturum 1). İlk prompt iki bölümü birlikte kapsıyordu. Teslimden önce ikinci bir oturumda iki bölümü birlikte inceledim ([Oturum 2](#oturum-2--bağımsız-inceleme-iki-bölüm-için-ortak)). Promptlar silinmeden, düzeltilmeden ve sırasıyla aşağıda (bkz. [A-claude-code.md](A-claude-code.md)).
 
 
 ## Özet: işi nasıl yönettim
@@ -15,18 +13,14 @@
 | 4–5 | İkinci oturumun işini kontrol ettirmek; e-postanın yapay zekâ tarafından gönderilmemesi | Değişiklikler yerinde bulundu |
 | 6 | ChatGPT incelemesini doğrulatmak | Sayfalama bulunamazsa tek sayfanın tam tarama sayılması riski doğrulandı; sitedeki toplamla karşılaştıran eksiksizlik kontrolü eklendi |
 
-Promptlar aşağıda (niyetleri korunarak yeniden ifade edildi; bkz. yukarıdaki not).
+Promptların birebir metni aşağıda (brief gereği değiştirilmeden).
 
 ---
 
 ## Prompt 1 · ≈11:06 (iki bölüm için ortak)
 
 ```
-Bir işe alım sürecinde uygulama görevi (case) aldım; e-posta adresime geldi ve benim için çok önemli.
-
-1. Gmail'de case e-postasını ve eklerini bul. Görevi, süreyi ve teslim koşullarını özetle.
-2. Görevi, brief'teki her maddeyi karşılayacak şekilde eksiksiz tamamlayalım.
-3. Birlikte çalışalım: benim vermem gereken kararlarda dur ve bana sor.
+ise girmek icin bir case geldi cok onemli mail adresimde var case icerigi beraber tum ayrintilariyla eksiksiz yapalim
 ```
 
 ## Prompt 2 · ≈11:10 · Claude Code'un sorusuna verdiğim cevap (seçenekli soru)
@@ -67,15 +61,8 @@ Bir işe alım sürecinde uygulama görevi (case) aldım; e-posta adresime geldi
 ## Prompt 3 · ≈11:54 (Oturum 2'nin ilk promptu; [A-claude-code.md](A-claude-code.md)'de Prompt 5)
 
 ```
-Bir işe alım case'i için başka bir Claude Code oturumunda hazırladığım teslim bu repoda:
-https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan
-
-Sonucun çok iyi olmasını istiyorum. Önceki konuşmayı bilmeyen bağımsız bir değerlendirici gibi davran ve
-değerlendirmenin bir yapay zekâ tarafından da yapılabileceğini varsay.
-
-1. Repoyu brief'e göre baştan denetle; eksik ya da fazla olan her şeyi bul ve düzelt.
-2. README'deki "Neyi bitiremedim" bölümünden yapılabilecek maddeleri tamamla.
-3. README'yi profesyonel hâle getir. Türkçe uygunsa Türkçe kalsın.
+erdinc beyden case geldi ben de baska bir sohbette sana yaptirdim suan ama emin degilim nasil olcak diye suan case repomda githubda https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan  . Mangolabdaki gibi case imin cok iyi olmasini istiyorum ilk 5 te olmam lazim anlayacagin.
+Eger eksik veya fazlalik bir sey goruyorsan duzeltelim cok profosyonel olmasi lazim. Buyuk ihtimal caseleri elleriyle kontrol etmeyebilirler yapay zekaya case i mi atip puanlatirlar gibi. Cok profosyonel olmasi istiyorum anlayacagin. Bir de mesela neyi bitiremedin diye bolum acmis onlari yapabiliyorsak yapalim readme yi de duzenleyelim eger turkce olmasini uygun goruyorsan turkce kalsin ama dedigim gibi en iyi olsun
 ```
 
 ## Claude Code'un Oturum 2'de Bölüm B için yaptıkları (özet süreç günlüğü)
@@ -99,16 +86,13 @@ değerlendirmenin bir yapay zekâ tarafından da yapılabileceğini varsay.
 ## Prompt 4 · ≈12:18
 
 ```
-Repoyu ikinci bir Claude Code oturumuna inceletip düzelttirdim. O oturumun değişikliklerini incele:
-
-1. Düzeltmeler yerinde mi?
-2. Senin gördüğün başka eksik var mı?
+senin yaptigin repoyu baska bir claude oturumuna verdim bazi eksikliklerini buldu ve duzeltti repoyu tekrar kontrol eder misin sence yerinde duzeltmeler mi veya senin de eksik gordugun seyler var mi
 ```
 
 ## Prompt 5 · ≈12:27 (çalışma sürerken yazdım)
 
 ```
-E-postayı gönderme; gönderimi ben yapacağım.
+sakin gonderme maili
 ```
 
 ## Claude Code'un bu kontrolde Bölüm B için yaptıkları
@@ -120,10 +104,10 @@ E-postayı gönderme; gönderimi ben yapacağım.
 
 ## Harici inceleme (ChatGPT) — bulguların doğrulanması
 
-## Prompt 6 · ≈12:31 ([A-claude-code.md](A-claude-code.md)'de Prompt 8)
+## Prompt 6 · ≈12:31 ([A-claude-code.md](A-claude-code.md)'de Prompt 8; metin orada birebir)
 
-Bu prompt, ChatGPT incelemesinin tamamıyla birlikte [A-claude-code.md](A-claude-code.md) dosyasında (Prompt 8).
-İncelemenin Bölüm B ile ilgili kısmı:
+Bu prompt, yapıştırdığım ChatGPT incelemesiyle birlikte [A-claude-code.md](A-claude-code.md) dosyasında
+birebir duruyor. Bölüm B ile ilgili kısmı:
 
 ```
 * B’de mevcut sitede yeni arıza bulmadım. Önceki koşullu risk sürüyor: sayfalama bağlantısı bulunmazsa akış tek sayfayı tam tarama sayabilir ve yanlış “ürün kaldırıldı” bildirimi üretebilir.
@@ -136,9 +120,3 @@ Bu prompt, ChatGPT incelemesinin tamamıyla birlikte [A-claude-code.md](A-claude
 3. **Test:** Canlı sitenin 1. sayfasından sayfalama bağlantıları silinip akış çalıştırıldı. 1 sayfa ve 6 ürün taranıyor, sonuç "sitede 117 ürün yazıyor, 6 ürün ayrıştırıldı" → sağlıksız. B'nin 10 Node testi geçiyor.
 4. `workflow_olustur.py` doğrulayıcısı sadece tek tırnaklı `$('…')` referanslarını denetliyordu. Adında kesme işareti olan düğüm (`$("Sayfa 1'i Çek")`) de denetlensin diye genişletildi.
 5. **Gerçek n8n'de yeniden çalıştırıldı:** `sitedeki_urun_sayisi: 117`, `urun_sayisi: 117`, `saglikli: true`.
-
-## Prompt 7 · ≈12:50 ([A-claude-code.md](A-claude-code.md)'de Prompt 9)
-
-```
-README ve dokümanlar Türkçe kalsın; README'nin başına kısa bir İngilizce özet ekle.
-```

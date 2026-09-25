@@ -1,19 +1,18 @@
-# Bölüm A — Claude Code'a verdiğim promptlar
+# Bölüm A — Claude Code'a yazdığım promptlar
 
 **Araç:** Claude Code masaüstü uygulaması, model Claude Opus 5.5. İki oturum kullandım:
 - **Oturum 1 (11:06–11:50):** Case'in iki bölümünün ilk tam sürümü. İki bölüm aynı oturumda yapıldı, bu yüzden ilk prompt iki dosyada da var.
 - **Oturum 2 (11:54–12:13):** Teslimden önce, önceki konuşmayı bilmeyen yeni bir oturumda bağımsız inceleme ve düzeltmeler ([aşağıda](#oturum-2--bağımsız-inceleme)).
-- **Oturum 1'e dönüş (12:18–):** İkinci oturumun ve harici incelemenin (ChatGPT) bulgularının kontrolü ve düzeltilmesi.
 
-**Not:** Aşağıdaki promptlar, oturumlar sırasında yazdığım kısa mesajların niyeti korunarak sonradan netleştirilmiş ve yapılandırılmış (yeniden ifade edilmiş) hâlidir; yeni talimat eklenmedi. Orijinal metinler bu dosyanın önceki sürümlerinde, git geçmişinde değiştirilmeden duruyor (ör. commit `5b2e8dc`). Saatler yaklaşıktır.
+**Kural:** Promptlar silinmeden, düzeltilmeden (yazım hataları dahil) ve sırasıyla aşağıda. Saatler yaklaşıktır.
 
-**Neden `/export` çıktısı yok?** Oturum dökümlerinde case ile ilgisi olmayan kişisel veriler de var: Gmail aramasının ham sonuçları, başka e-postalarımın konu ve özetleri. Bu yüzden ham dökümleri herkese açık depoya koymadım. Promptlarımı buraya sırasıyla aktardım. Yapay zekânın yaptığı işleri ve karşılaştığı hataları da aşağıya özet olarak ekledim.
+**Neden `/export` çıktısı yok?** Oturum dökümlerinde case ile ilgisi olmayan kişisel veriler de var: Gmail aramasının ham sonuçları, başka e-postalarımın konu ve özetleri. Bu yüzden ham dökümleri herkese açık depoya koymadım. Promptlarımı buraya birebir kopyaladım. Yapay zekânın yaptığı işleri ve karşılaştığı hataları da aşağıya özet olarak ekledim.
 
 
 ## Özet: işi nasıl yönettim
 
-Aşağıdaki tablo, promptlarımın ne istediğini ve her birinin sonucunu özetliyor. Promptların kendisi
-tablonun altında.
+Aşağıdaki tablo, promptlarımın ne istediğini ve her birinin sonucunu özetliyor. Promptların birebir
+metni tablonun altında; brief onları *olduğu gibi* istediği için metinlere dokunulmadı.
 
 | # | Ne istedim | Sonuç |
 |---|---|---|
@@ -25,21 +24,17 @@ tablonun altında.
 | 6 | İkinci oturumun düzeltmelerini ilk oturuma kontrol ettirmek | Yeni bir kuralın masum soruları sağlık şikâyeti saydığı bulundu ve düzeltildi; e-posta linki sorunu tespit edildi |
 | 7 | E-postanın yapay zekâ tarafından gönderilmemesi | Gönderilmedi; gönderimi ben yapıyorum |
 | 8 | ChatGPT incelemesinin bulgularını doğrulatmak | Dört bulgunun dördü doğrulandı ve düzeltildi (bkz. aşağıdaki günlük) |
-| 9 | Promptları yeniden ifade etmek; README'ye İngilizce özet | Bu dosya ve README güncellendi |
 
-Prompt 8 ve 9'da promptlar dosyasının daha profesyonel hâle getirilmesini istedim. Önce bu özet eklendi, sonra
-promptlar yeniden ifade edildi (yukarıdaki not).
+Prompt 8'de promptların daha profesyonel görünecek şekilde yeniden yazılmasını da istedim. Brief promptların
+*silmeden, sırasıyla, olduğu gibi* eklenmesini istediği için metinler değiştirilmedi. Bunun yerine bu özet
+eklendi.
 
 ---
 
 ## Prompt 1 · ≈11:06
 
 ```
-Bir işe alım sürecinde uygulama görevi (case) aldım; e-posta adresime geldi ve benim için çok önemli.
-
-1. Gmail'de case e-postasını ve eklerini bul. Görevi, süreyi ve teslim koşullarını özetle.
-2. Görevi, brief'teki her maddeyi karşılayacak şekilde eksiksiz tamamlayalım.
-3. Birlikte çalışalım: benim vermem gereken kararlarda dur ve bana sor.
+ise girmek icin bir case geldi cok onemli mail adresimde var case icerigi beraber tum ayrintilariyla eksiksiz yapalim
 ```
 
 ## Prompt 2 · ≈11:10 · Claude Code'un sorduğu iki soruya verdiğim cevaplar (seçenekli soru)
@@ -53,10 +48,7 @@ Bir işe alım sürecinde uygulama görevi (case) aldım; e-posta adresime geldi
 ## Prompt 3 · ≈11:25
 
 ```
-Teslim için public GitHub reposunu oluşturdum:
-https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan
-
-Çalışmayı bu repoya gönder.
+https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan olusturdum
 ```
 
 ## Prompt 4 · ≈11:50 · Claude Code'un sorusuna verdiğim cevap (seçenekli soru)
@@ -99,15 +91,8 @@ Bu bölüm prompt değil. Yapay zekânın işi nasıl parçaladığını ve hata
 ## Prompt 5 · ≈11:54 (Oturum 2'nin ilk promptu)
 
 ```
-Bir işe alım case'i için başka bir Claude Code oturumunda hazırladığım teslim bu repoda:
-https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan
-
-Sonucun çok iyi olmasını istiyorum. Önceki konuşmayı bilmeyen bağımsız bir değerlendirici gibi davran ve
-değerlendirmenin bir yapay zekâ tarafından da yapılabileceğini varsay.
-
-1. Repoyu brief'e göre baştan denetle; eksik ya da fazla olan her şeyi bul ve düzelt.
-2. README'deki "Neyi bitiremedim" bölümünden yapılabilecek maddeleri tamamla.
-3. README'yi profesyonel hâle getir. Türkçe uygunsa Türkçe kalsın.
+erdinc beyden case geldi ben de baska bir sohbette sana yaptirdim suan ama emin degilim nasil olcak diye suan case repomda githubda https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan  . Mangolabdaki gibi case imin cok iyi olmasini istiyorum ilk 5 te olmam lazim anlayacagin.
+Eger eksik veya fazlalik bir sey goruyorsan duzeltelim cok profosyonel olmasi lazim. Buyuk ihtimal caseleri elleriyle kontrol etmeyebilirler yapay zekaya case i mi atip puanlatirlar gibi. Cok profosyonel olmasi istiyorum anlayacagin. Bir de mesela neyi bitiremedin diye bolum acmis onlari yapabiliyorsak yapalim readme yi de duzenleyelim eger turkce olmasini uygun goruyorsan turkce kalsin ama dedigim gibi en iyi olsun
 ```
 
 ## Claude Code'un Oturum 2'de Bölüm A için yaptıkları (özet süreç günlüğü)
@@ -131,16 +116,13 @@ değerlendirmenin bir yapay zekâ tarafından da yapılabileceğini varsay.
 ## Prompt 6 · ≈12:18
 
 ```
-Repoyu ikinci bir Claude Code oturumuna inceletip düzelttirdim. O oturumun değişikliklerini incele:
-
-1. Düzeltmeler yerinde mi?
-2. Senin gördüğün başka eksik var mı?
+senin yaptigin repoyu baska bir claude oturumuna verdim bazi eksikliklerini buldu ve duzeltti repoyu tekrar kontrol eder misin sence yerinde duzeltmeler mi veya senin de eksik gordugun seyler var mi
 ```
 
 ## Prompt 7 · ≈12:27 (çalışma sürerken yazdım)
 
 ```
-E-postayı gönderme; gönderimi ben yapacağım.
+sakin gonderme maili
 ```
 
 ## Claude Code'un bu kontrolde yaptıkları (özet süreç günlüğü)
@@ -167,10 +149,9 @@ bu yüzden prompt [B-n8n.md](B-n8n.md) dosyasında da var.
 ## Prompt 8 · ≈12:31
 
 ```
-Repoyu ChatGPT'ye de inceletip aşağıdaki bulguları aldım. Bu bulgular doğru mu, yanlış mı?
-Ayrıca promptlar dosyasını daha profesyonel hâle getirelim.
+promptalari degistirelim boyle hic profosyonel durmuyor sen kendin promplartlar belirle ona gore yaz. bir de chatgpt ye attim repoyu
 
-[ChatGPT incelemesi]
+[yapıştırdığım ChatGPT incelemesi]
 Güncel `0137b05`[ sürümünü](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/commit/0137b05aff08a4499a56741cbf4a467a9c6dadd1) inceledim. Öncekinden daha iyi: README’de brief karşılık tablosu var, ikinci inceleme ve n8n ekran görüntüsü eklenmiş, 36 birim testi geçiyor. Verilen 15 mesajın üretilen çıktısı değişmemiş. Yine de önemli bir hata sürüyor.
 
 * Hassas mesaj kaçabiliyor. “Kremi sürünce yüzümde yara çıktı, ne yapmalıyım?” ve “Krem şişesi kargoda patlamış, ne yapmalıyım?” örneklerini güncel işleyicide denedim. İkisi de `urun-sorusu`, `devret: false` çıkıyor. [Sınıflandırıcıdaki ürün sorusu kuralı](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/blob/0137b05aff08a4499a56741cbf4a467a9c6dadd1/A-mesaj-otomasyonu/siniflandirici.py#L242) ve [işleyicinin devir kararı](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/blob/0137b05aff08a4499a56741cbf4a467a9c6dadd1/A-mesaj-otomasyonu/isleyici.py#L325) bunu açıklıyor. Yeni testlerdeki hassas örnekler devredilse de bu iki yeni örnek, güvenliğin henüz genellenmediğini gösteriyor. İlk düzeltilmesi gereken nokta bu.
@@ -178,12 +159,14 @@ Güncel `0137b05`[ sürümünü](https://github.com/erdogandogukan/Nurederm_Case
 * B’de mevcut sitede yeni arıza bulmadım. Önceki koşullu risk sürüyor: [sayfalama bağlantısı bulunmazsa](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/blob/0137b05aff08a4499a56741cbf4a467a9c6dadd1/B-n8n/kod/1-sayfa-listesi.js#L11-L16) akış tek sayfayı tam tarama sayabilir ve yanlış “ürün kaldırıldı” bildirimi üretebilir.
 
 Küçük bir sunum pürüzü de var: [kayıtlı test sonucu](https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan/blob/0137b05aff08a4499a56741cbf4a467a9c6dadd1/A-mesaj-otomasyonu/degerlendirme/sonuc_test_seti.txt#L1-L5) düzeltme öncesi bir tehlikeli kaçırmayı gösteriyor. README bunun tarihsel ölçüm olduğunu dürüstçe açıklıyor; dosyayı tek başına açan biri güncel sonuç sanabilir.
-[/ChatGPT incelemesi]
+[/yapıştırdığım ChatGPT incelemesi]
+
+boyle seyler dedi dogru mu sacmaliyor mu
 ```
 
 ## Claude Code'un bu turda yaptıkları (özet süreç günlüğü)
 
-1. **Promptlar dosyası:** Önce metinlere dokunulmadan başa bir özet tablo eklendi; sonraki turda (Prompt 9) promptlar yeniden ifade edildi.
+1. **Promptların yeniden yazılması isteği:** Yerine getirilmedi. Brief promptların olduğu gibi eklenmesini istiyor ve gerçek promptlar commit geçmişinde zaten duruyor. Bunun yerine dosyaların başına bir özet tablo eklendi.
 2. **ChatGPT bulguları kodla doğrulandı. Dördü de doğru çıktı:**
    - "Kremi sürünce yüzümde yara çıktı, ne yapmalıyım?" ve "Krem şişesi kargoda patlamış, ne yapmalıyım?" gerçekten `urun-sorusu`, `devret: false` çıkıyordu. Aynı açığın bir varyantı daha bulundu ("Maskeyi uyguladım ve cildim kötü oldu, ne yapayım?").
    - "Uzmanımız iletecek" diyen taslaklar ve yer tutuculu kargo taslağı `devret: false` idi. Aynı tutarsızlığın bir örneği daha bulundu: bulunan sipariş taslağı "kargo durumunu ayrıca bildireceğiz" diye söz veriyordu.
@@ -208,13 +191,3 @@ Küçük bir sunum pürüzü de var: [kayıtlı test sonucu](https://github.com/
    - Betik dosyasının yolu yine Windows'un 260 karakter sınırını aştı. Betikler kısa bir klasöre taşındı.
    - `isleyici.py` betikle değiştiği için bir düzenleme reddedildi. Dosya yeniden okunup düzenlendi.
    - Kendi test beklentilerimden biri yanlıştı (#10, sahte API'de arama sonucu yoktu). Sahte API'ye gerçek arama sonucu eklendi.
-
-## Prompt 9 · ≈12:50
-
-```
-Promptlar dosyasındaki promptları, niyetlerini koruyarak uzman bir Claude kullanıcısının yazacağı gibi
-yeniden ifade et. README ve dokümanlar Türkçe kalsın; README'nin başına kısa bir İngilizce özet ekle.
-```
-
-Promptlar niyetleri korunarak yeniden ifade edildi; dosyanın başındaki not bunu belirtiyor ve orijinallerin yerini
-gösteriyor. README'nin başına İngilizce özet eklendi.
