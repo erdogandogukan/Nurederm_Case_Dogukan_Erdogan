@@ -85,3 +85,35 @@ Eger eksik veya fazlalik bir sey goruyorsan duzeltelim cok profosyonel olmasi la
 5. **Test seti bir kez çalıştırıldı:** 18/24 (%75). 12 hassas mesajın 11'i insana gidiyor, 1'i otomatik cevaplanıyor ("Şişe kargoda patlamış, her yer krem olmuş" → *urun-sorusu*). Bu tek açık için genel bir kural, ölçümden **sonra** eklendi (`343f6b3`): soru olmayan cümle otomatik ürün cevabı almaz. Bunun ölçümden sonra yapıldığı README'de açıkça yazıyor. Kalan 6 yanlış konunun hepsi `diger` + devret ile insana gidiyor; test setine göre kural yazılmadı.
 6. **Mutasyon testi tekrarlandı:** `ayni_musteri` her zaman `True` döndürecek şekilde bozuldu → 5 test kırmızı. Dosya geri alındı.
 7. **Teslim e-postası taslağı:** Repo linkinin çıplak link yerine `google.com/url?q=…` yönlendirmesi olarak yazıldığı görüldü. Taslak düzeltildi. E-postayı kontrol edip kendim gönderiyorum.
+
+---
+
+## Oturum 1'e dönüş — ikinci oturumun değişikliklerinin kontrolü
+
+İkinci oturumun commit'lerini, ilk sürümü yapan oturuma geri verip kontrol ettirdim. İstek iki bölümü birlikte kapsıyor. Bu yüzden promptlar [B-n8n.md](B-n8n.md) dosyasında da var.
+
+## Prompt 6 · ≈12:18
+
+```
+senin yaptigin repoyu baska bir claude oturumuna verdim bazi eksikliklerini buldu ve duzeltti repoyu tekrar kontrol eder misin sence yerinde duzeltmeler mi veya senin de eksik gordugun seyler var mi
+```
+
+## Prompt 7 · ≈12:27 (çalışma sürerken yazdım)
+
+```
+sakin gonderme maili
+```
+
+## Claude Code'un bu kontrolde yaptıkları (özet süreç günlüğü)
+
+1. **Değişiklikleri tek tek okudu ve yeniden çalıştırdı:** 38 test (önce 36), geliştirme ve test seti ölçümleri, 15 mesajın çıktısı. Raporlanan sayılar aynı çıktı ve `talepler.json` değişmemişti.
+2. **Yeni kuralın bedelini denedi:** "kullanım sonrası şikâyet" kuralı (`sonra` + vücut kelimesi) 10 masum sorunun **6'sını** yüksek öncelikli sağlık şikâyeti sayıyordu.
+   - Örnek: "Sipariş verdikten sonra elime ne zaman ulaşır?" (teslimat deyimi). Diğerleri: "kargo yüzünden" (sebep), "yüz kremi" ve "saç maskesi" (ürün adı).
+   - Ölçüm setlerinde bu tür masum cümle yoktu. Geliştirme setindeki %100, kuralların o sete göre ayarlanmasının sonucuydu.
+3. **Düzeltme:** Vücut kelimesi birinci şahıs iyelik ekine bağlandı ("yüzüm", "cildimde", "saçlarım"). Bu kurala bağlı iki test seti mesajı (t01, t02) hâlâ yakalanıyor. Masum 6 sorunun hiçbiri alarm vermiyor. İki setin sonuçları ve 15 mesajın çıktısı değişmedi. `YanlisAlarm` testleri eklendi (36 → 38).
+   - Kendi test beklentilerimden biri yanlıştı: "Sipariş verdikten sonra elime ne zaman ulaşır?" sipariş sorusu olarak değil `diger` + devret olarak sınıflanıyor. Bu güvenli taraf olduğu için beklenti "sağlık şikâyeti değil" olarak düzeltildi.
+   - Mutasyon testi tekrarlandı: sahiplik kontrolü kapatılınca yine 5 test kırmızı.
+4. **Teslim e-postası:** Gmail'de iki taslak bulundu. Biri case konuşmasının içinde; diğeri benim ilk taslağım, güncellenirken konuşmadan kopmuştu. Ham MIME'da ikisinde de link **hâlâ** `google.com/url?q=…` yönlendirmesiydi; yani önceki "düzeltildi" notu tutmuyordu.
+   - Deneme için fazla taslağa temiz bir link yazıldı. Gmail bağlantısı hem HTML'deki linki hem düz metindeki çıplak URL'yi yine yönlendirmeye çevirdi. Yani bu araçla temiz link yazılamıyor.
+   - Fazla taslağın konusu "[SİLİN - GÖNDERMEYİN]" yapıldı (taslak silmek kalıcı olduğu için yapay zekâ yapmadı). Linki gönderimden önce Gmail'de elle yapıştırıyorum.
+   - E-posta yapay zekâ tarafından gönderilmedi.

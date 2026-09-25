@@ -8,15 +8,16 @@
 | Çalışmaya başladım | **11:06** |
 | İlk tam sürüm (iki bölüm, testler, README) | **11:50** |
 | İkinci Claude Code oturumunda bağımsız inceleme | **11:54 – 12:13** |
-| Son commit | **12:13** (teslim sınırı 14:00) |
+| İlk oturumda ikinci oturumun değişikliklerinin kontrolü | **12:18 – 12:29** |
+| Son commit | **12:29** (teslim sınırı 14:00) |
 | Kullandığım yapay zekâ aracı | **Claude Code** (Claude Opus 5.5, masaüstü uygulaması) |
 
 Kodun, testlerin ve dokümantasyonun taslağını Claude Code yazdı. Benim yazdığım promptlar **olduğu gibi ve sırasıyla** [`promptlar/`](promptlar/) klasöründe. Aynı yerde, yapay zekânın yol boyunca karşılaştığı hatalar ve bunları nasıl çözdüğü de var.
 
 **Kısaca:**
-- **Bölüm A:** 15 mesaj konulara ayrıldı ve 4'ü insana devredildi. Başka müşteriye ait siparişin (#12) hiçbir bilgisi çıktıya sızmıyor; bunu 36 testten 5'i koruyor. Sınıflandırıcıyı ayrıca **74 yeni etiketli mesajla ölçtüm**. Sonuçları, düzeltilen açıkları ve kalan sınırları aşağıda olduğu gibi yazdım.
+- **Bölüm A:** 15 mesaj konulara ayrıldı ve 4'ü insana devredildi. Başka müşteriye ait siparişin (#12) hiçbir bilgisi çıktıya sızmıyor; bunu 38 testten 5'i koruyor. Sınıflandırıcıyı ayrıca **74 yeni etiketli mesajla ölçtüm**. Sonuçları, düzeltilen açıkları ve kalan sınırları aşağıda olduğu gibi yazdım.
 - **Bölüm B:** n8n şablonu #4640'tan uyarlanan akış tüm sayfaları geziyor ve fiyatı sayı olarak alıyor. Sonucu Google Sheets'e tarih damgasıyla yazıyor, değişiklik olunca e-posta gönderiyor ve bir hata dalı var. Akış **gerçek bir n8n 2.40.7 kurulumunda** çalıştırıldı (20 sayfa, 117 ürün); iki hata senaryosu da denendi.
-- **Yöntem:** İlk sürüm bittikten sonra işi ayrı bir Claude Code oturumuna baştan incelettim. Bu inceleme README'deki bir iddianın yanlış olduğunu ortaya çıkardı: sınıflandırıcıyla ilgili "yeni ifadeler güvenli tarafa düşer" cümlesi. Bu açık ölçüldü, düzeltildi ve yeniden ölçüldü ([ayrıntı](#sınıflandırıcıyı-yeni-mesajlarla-ölçtüm)).
+- **Yöntem:** İlk sürüm bittikten sonra işi ayrı bir Claude Code oturumuna baştan incelettim. Bu inceleme README'deki bir iddianın yanlış olduğunu ortaya çıkardı: sınıflandırıcıyla ilgili "yeni ifadeler güvenli tarafa düşer" cümlesi. Bu açık ölçüldü, düzeltildi ve yeniden ölçüldü ([ayrıntı](#sınıflandırıcıyı-yeni-mesajlarla-ölçtüm)). Sonra bu düzeltmeleri de ilk oturuma kontrol ettirdim. Kontrol, yeni kurallardan birinin masum soruları sağlık şikâyeti saydığını buldu; o da düzeltildi.
 
 ---
 
@@ -39,7 +40,7 @@ Kodun, testlerin ve dokümantasyonun taslağını Claude Code yazdı. Benim yazd
 | **B** Başlangıç şablonu (ad + link) | [#4640 Competitor Price Monitoring…](https://n8n.io/workflows/4640-competitor-price-monitoring-with-web-scrapinggoogle-sheets-and-telegram/) · [`akis-aciklama.md`](B-n8n/akis-aciklama.md) ve akıştaki not |
 | **B Bonus** Ekran görüntüsü | [n8n editöründe akış](B-n8n/ekran-goruntuleri/n8n-editor-akis.png) + [gerçek n8n çalıştırma kaydı](B-n8n/n8n-calistirma-kaydi.md) |
 | Promptlar silinmeden, sırasıyla | [`promptlar/A-claude-code.md`](promptlar/A-claude-code.md) · [`promptlar/B-n8n.md`](promptlar/B-n8n.md) |
-| Depo temiz, küçük commit'ler | Anahtar, `.env` ya da `node_modules` yok · 23 commit |
+| Depo temiz, küçük commit'ler | Anahtar, `.env` ya da `node_modules` yok · 25 commit |
 
 ## Hızlı başlangıç
 
@@ -49,7 +50,7 @@ Gereksinimler: **Python 3.10+** (ek paket yok, sadece standart kütüphane) · B
 # Bölüm A — mesajları işle: talepler.json + ozet.html üretir, terminale özet basar
 cd A-mesaj-otomasyonu
 python main.py
-python -m unittest discover -s tests -v                    # 36 test, ağ gerektirmez
+python -m unittest discover -s tests -v                    # 38 test, ağ gerektirmez
 python degerlendirme/degerlendir.py                        # sınıflandırıcı: 50 mesajlık geliştirme seti
 python degerlendirme/degerlendir.py degerlendirme/test_seti.json   # 24 mesajlık test seti
 
@@ -74,7 +75,7 @@ python araclar/sema_olustur.py                # akis-semasi.svg'yi workflow.json
 │   ├── mesajlar.json         girdi (case'ten)
 │   ├── talepler.json         ÇIKTI
 │   ├── ozet.html             ÇIKTI: tek sayfalık özet
-│   ├── tests/                36 birim testi (sahte API ile, ağsız)
+│   ├── tests/                38 birim testi (sahte API ile, ağsız)
 │   └── degerlendirme/        etiketli geliştirme (50) + test (24) seti, ölçüm betiği ve sonuçları
 ├── B-n8n/
 │   ├── workflow.json         n8n'e import edilecek akış
@@ -154,12 +155,13 @@ python araclar/sema_olustur.py                # akis-semasi.svg'yi workflow.json
 | 4. O tek açık kapatıldıktan sonra | test | 18/24 | 12/12 | 0 *(artık görülmüş set)* |
 
 - **Adım 1'de bulunan:** "Kremi sürdükten sonra yüzümde kabarcıklar çıktı" gibi 6 hassas mesaj, içlerinde ürün adı geçtiği için *ürün sorusu* sanılıp otomatik cevaplanıyordu. İlk README "kalıplara uymayan ifade güvenli tarafa (diger + devret) düşer" diyordu. **Ölçüm bunun yanlış olduğunu gösterdi.** Mesaj kalıplara uymuyor değildi; *yanlış* kalıba uyuyordu.
-- **Düzeltmeler (tek tek ezber yerine genel kurallar):** (a) *"…dan/den sonra" + vücut bölgesi* → kullanım sonrası şikâyet. Belirti kelimesi listede olmasa da mesaj insana gider. (b) Kaçan şikâyet/belirti kalıpları eklendi ("paramı geri", "yanlış renk", "berbat", "pullanma"…). (c) **Soru olmayan cümle otomatik ürün cevabı almaz** ("Şişe kargoda patlamış, her yer krem olmuş" bir soru değil, şikâyet). (d) "bedava" tek başına spam sayılmıyor ("2 alana 1 bedava kampanyanız geçerli mi?").
+- **Düzeltmeler (tek tek ezber yerine genel kurallar):** (a) *"…dan/den sonra" (ya da "sonra") + kişinin kendi vücut bölgesi ("yüzüm", "cildimde", "saçlarım")* → kullanım sonrası şikâyet. Belirti kelimesi listede olmasa da mesaj insana gider. (b) Kaçan şikâyet/belirti kalıpları eklendi ("paramı geri", "yanlış renk", "berbat", "pullanma"…). (c) **Soru olmayan cümle otomatik ürün cevabı almaz** ("Şişe kargoda patlamış, her yer krem olmuş" bir soru değil, şikâyet). (d) "bedava" tek başına spam sayılmıyor ("2 alana 1 bedava kampanyanız geçerli mi?").
 - **Test seti düzeltmelerden önce yazılıp commit'lendi** (`2b481da`) ve düzeltmelerden sonra **bir kez** çalıştırıldı (`485fd82` → sonuç [`sonuc_test_seti.txt`](A-mesaj-otomasyonu/degerlendirme/sonuc_test_seti.txt)). Kaçan tek hassas mesaj (t08) için kural (c) ölçümden **sonra** eklendi (`343f6b3`). Bu yüzden adım 4'teki sonuç bağımsız bir ölçüm değildir.
 - **Hâlâ yanlış konu verilen 6 test mesajı** (son kullanma tarihi geçmiş, sahte ürün, çift çekim, "order 8 hasn't shipped"…) konusu yanlış olsa da `diger` + devret ile **insana gidiyor**. Bunları bilerek kurala eklemedim; test setine göre kural yazmak ölçümü anlamsız kılardı.
+- **Kuralın bedeli de ölçüldü (sonraki kontrol):** İki set sadece "hassas mesaj kaçtı mı?" sorusuna bakıyor, "masum mesaj boşuna alarm verdi mi?" sorusuna bakmıyor. Kural (a)'nın ilk hâli vücut kelimesini herhangi bir biçimde kabul ediyordu. Bu yüzden 10 masum sorunun 6'sını **yüksek öncelikli sağlık şikâyeti** sayıyordu. Örneğin "Sipariş verdikten sonra elime ne zaman ulaşır?" sorusunda "elime" teslimat deyimi. Diğerleri: "kargo yüzünden" (sebep), "yüz kremi" ve "saç maskesi" (ürün adı). Müşteriye de "Yaşadığınız durum için çok üzgünüz" taslağı hazırlanıyordu. Vücut kelimesi birinci şahıs iyelik ekine bağlandı ("yüzüm", "cildimde"): **10 masum sorunun hiçbiri** artık alarm vermiyor. İki setin sonuçları değişmedi; t01 ve t02 hâlâ bu kuralla yakalanıyor. Bu hedefli bir kontroldü, bağımsız bir ölçüm değil. Masum sorular bu açığı bulmak için yazıldı ve [testlere](A-mesaj-otomasyonu/tests/test_siniflandirici.py) eklendi (`YanlisAlarm`). Kalan bilinen yanlış alarm: "Kremi yüzüme sürdükten sonra ne kadar beklemeliyim?". Bu soru insana gider, yani hata güvenli tarafta kalır.
 - **Dürüst sınır:** Bu iki seti gerçek müşteriler değil, inceleme oturumundaki Claude Code yazdı. Test seti düzeltmelerden önce yazıldı ama aynı oturumda yazıldığı için tam bağımsız sayılmaz. Gerçek doğruluğu firmanın geçmiş WhatsApp/Instagram mesajlarından etiketlenmiş bir örnek gösterir.
 
-Bütün bunlar birim testlerine de eklendi (29 → 36 test). Geliştirme setindeki hiçbir hassas mesajın otomatik cevaplanmadığını bir test sürekli kontrol ediyor.
+Bütün bunlar birim testlerine de eklendi (29 → 36 → 38 test). Geliştirme setindeki hiçbir hassas mesajın otomatik cevaplanmadığını bir test sürekli kontrol ediyor.
 
 ## Bölüm B — n8n fiyat takibi
 
@@ -192,7 +194,12 @@ Claude Code'a tek bir başlangıç promptu verdim ("mailimdeki case'i beraber ek
    - sınıflandırıcıyı yeni etiketli mesajlarla ölçtü, hassas mesaj kaçırma açığını buldu ve kapattı ([yukarıda](#sınıflandırıcıyı-yeni-mesajlarla-ölçtüm)),
    - B'de iki küçük sorun buldu: Sheets'in eklediği `row_number` alanı tabloya geri yazılabilirdi; ayrıca arayüzden içe aktarımda Error Workflow bağlantısı kopuyordu. İkisi de düzeltildi ya da belgelendi. Güncel akış gerçek n8n'de yeniden çalıştırıldı,
    - n8n editörünün ekran görüntüsünü ekledi,
-   - teslim e-postası taslağında repo linkinin çıplak link yerine bir Google yönlendirme adresi (`google.com/url?q=…`) olarak yazıldığını fark etti ve taslağı düzeltti.
+   - teslim e-postası taslağında repo linkinin çıplak link yerine bir Google yönlendirme adresi (`google.com/url?q=…`) olarak yazıldığını fark etti ve taslağı düzeltmeye çalıştı.
+7. **İnceleme sonrası kontrol (ilk oturum):** İkinci oturumun değişikliklerini ilk oturuma geri verip kontrol ettirdim. Bu kontrolde:
+   - Bütün testler ve ölçümler yeniden çalıştırıldı. Raporlanan sayılar aynı çıktı; 15 mesajın `talepler.json` çıktısı değişmemişti.
+   - `row_number` düzeltmesi, ekran görüntüsü ve içe aktarım notu yerinde bulundu.
+   - Yeni "kullanım sonrası şikâyet" kuralının masum soruları sağlık şikâyeti saydığı bulundu ve düzeltildi ([yukarıda](#sınıflandırıcıyı-yeni-mesajlarla-ölçtüm)).
+   - Taslağın ham MIME içeriğine bakıldı: link hâlâ yönlendirme olarak kayıtlıydı. Deneme gösterdi ki Gmail bağlantısı, API ile yazılan her linki kaydederken yönlendirmeye çeviriyor. Bu yüzden link, gönderimden önce Gmail'de elle yapıştırılıyor. E-postayı yapay zekâ değil, ben gönderiyorum.
 
 ## Nerede takıldım
 
