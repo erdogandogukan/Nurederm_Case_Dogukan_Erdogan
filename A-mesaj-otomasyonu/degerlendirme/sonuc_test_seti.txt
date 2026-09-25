@@ -1,0 +1,22 @@
+Set: test_seti.json · 24 mesaj
+Doğruluk: 18/24 = %75
+Hassas mesaj → hassas konu: 7/12
+Hassas mesaj → insana gidiyor (hassas konu ya da 'diger'+devret): 11/12
+TEHLİKELİ (hassas mesaj otomatik cevaplanıyor): 1
+   t08: → urun-sorusu     Şişe kargoda patlamış, her yer krem olmuş
+
+Konu bazında:
+   urun-sorusu      3/3
+   fiyat            3/3
+   siparis-durumu   2/3
+   iade-sikayet     2/6
+   istenmeyen-etki  5/6
+   diger            3/3
+
+Yanlış sınıflananlar (6):
+   t06: beklenen istenmeyen-etki bulunan diger           Deodoranttan koltuk altımda yara oldu
+   t07: beklenen iade-sikayet    bulunan diger           Gelen ürünün son kullanma tarihi geçmiş, bu kabul edilemez
+   t08: beklenen iade-sikayet    bulunan urun-sorusu     Şişe kargoda patlamış, her yer krem olmuş
+   t09: beklenen iade-sikayet    bulunan diger           Ürün sahte geldi bence, orijinaliyle hiç alakası yok
+   t10: beklenen iade-sikayet    bulunan diger           Kartımdan iki kez çekim yapılmış, düzeltir misiniz?
+   t15: beklenen siparis-durumu  bulunan diger           Order 8 hasn't shipped yet, any update?

@@ -110,6 +110,11 @@ class DegerlendirmedenGelenler(unittest.TestCase):
     def test_soru_olmayan_urun_bahsi_urun_sorusu_degil(self):
         self.assertEqual(siniflandir("Teşekkürler, ürünler çok güzel 😊").konu, "diger")
 
+    def test_soru_olmayan_urun_cumlesi_otomatik_cevaplanmaz(self):
+        # Ayrı tutulan test setinde kaçan tek hassas mesaj (t08); düzeltme ölçümden SONRA yapıldı.
+        s = siniflandir("Şişe kargoda patlamış, her yer krem olmuş")
+        self.assertNotIn(s.konu, ("urun-sorusu", "fiyat"))
+
     def test_gelistirme_setinde_hicbir_hassas_mesaj_otomatik_cevaplanmaz(self):
         from siniflandirici import HASSAS_KONULAR
         yol = KLASOR / "degerlendirme" / "gelistirme_seti.json"

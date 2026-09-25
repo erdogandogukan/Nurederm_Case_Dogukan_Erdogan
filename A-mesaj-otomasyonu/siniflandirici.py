@@ -148,8 +148,7 @@ URUN_SORU_BASLIKLARI: list[tuple[re.Pattern, str]] = [
 
 URUN_GENEL = _derle([r"\burun(ler|un|unuz|leriniz)?\b", r"\bingredient", r"\bskin type"])
 
-# Genel "ürün" kelimesi ancak mesaj bir soruysa ürün sorusu sayılır:
-# "Teşekkürler, ürünler çok güzel" bir soru değil.
+# Ürün sorusu sayılmak için mesajın soru olması gerekir: "Teşekkürler, ürünler çok güzel" soru değil.
 SORU = re.compile(r"\?|\bm(i|u)(sin|siniz|dir|yim|yiz)?\b|\b(nasil|hangi|neden|nerede|ne zaman|kac)\b|"
                   r"^(is|are|do|does|can|could|what|which|how)\b")
 
@@ -237,8 +236,10 @@ def siniflandir(mesaj: str) -> Siniflandirma:
     basliklar = [b for d, b in URUN_SORU_BASLIKLARI if d.search(metin)]
     if "içerik" in basliklar and any(b.endswith(" içeriği") for b in basliklar):
         basliklar.remove("içerik")  # "alkol içeriği" varken genel "içerik" tekrar olur
-    urun_genel = _eslesenler(URUN_GENEL, metin) if SORU.search(metin) else []
-    urun_sinyali = ([urun[0]] if urun else []) + basliklar + urun_genel
+    urun_genel = _eslesenler(URUN_GENEL, metin)
+    # Otomatik ürün cevabı yalnızca soruya verilir. Ürün adı geçen ama soru olmayan bir cümle
+    # ("Şişe kargoda patlamış, her yer krem olmuş") genelde şikâyettir: 'diger' + devret'e düşer.
+    urun_sinyali = (([urun[0]] if urun else []) + basliklar + urun_genel) if SORU.search(metin) else []
 
     siparis_sinyali = kisisel + [f"sipariş no {n}" for n in nolar]
 
