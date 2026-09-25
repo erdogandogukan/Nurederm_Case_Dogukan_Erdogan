@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+venv/
+
+# Ortam değişkenleri / anahtarlar — asla commit edilmez
+.env
+.env.*
+*.pem
+*.key
+credentials*.json
+
+# Node / yerel n8n kurulumu
+node_modules/
+.n8n/
+
+# Editör / işletim sistemi
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
