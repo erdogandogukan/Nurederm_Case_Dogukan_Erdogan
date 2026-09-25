@@ -49,13 +49,27 @@ ISTENMEYEN_ETKI = _derle([
     r"\begzama", r"\bekzama", r"\breaksiyon", r"\birritasyon",
     r"\bsivilce (yapti|cikardi|cikti)", r"\bleke (yapti|birakti)", r"\bacidi\b",
     r"\b(burn\w*|rash|itch\w*|allerg\w*|irritat\w*|swell\w*|redness|hives)\b",
+    # Değerlendirme setinde kaçan belirtiler (bkz. degerlendirme/):
+    r"\bkabar", r"\bpullan", r"\bsoyul", r"\baci(yor|ma|mak)\b", r"\bbatma\b|\bbati(yor|di)\b",
+    r"\bkasinti", r"\bkizarik", r"\bsac\w*\s+(\w+\s+)?dokul",
 ])
+
+# Yapısal kural: "...dan/den sonra" + vücut bölgesi → kullanım sonrası şikâyet. Belirti kelimesi
+# listede olmasa da mesaj insana gider. Yanlış pozitifi ("kremi yüzüme sürdükten sonra ne kadar
+# beklemeliyim?") de insana gider: hata güvenli tarafta kalır, tersi değil.
+KULLANIM_SONRASI = re.compile(r"\w+(dan|den|tan|ten)\s+sonra|\bsonra\b|\bafter (using|applying)\b")
+VUCUT = re.compile(r"\b(yuz|cilt|goz|dudak|sac|deri|vucud|boyn|boyun|kafa|elim|ellerim|"
+                   r"face|skin|eyes?|lips?|hair)\w*")
 
 IADE_SIKAYET = _derle([
     r"\biade", r"\bsikayet", r"\bgeri (gonder|odeme|iade)", r"\bdegisim\b", r"\bdegistir",
     r"\bezik\b", r"\bkirik\b", r"\bhasarli\b", r"\bbozuk\b", r"\byirtik\b", r"\bakmis\b",
     r"\byanlis urun", r"\beksik (urun|geldi|gonder)", r"\bmemnun degil", r"\brezalet",
     r"\biptal",
+    # Değerlendirme setinde kaçan şikâyet kalıpları:
+    r"\bparam\w* geri", r"\bgeri istiyorum", r"\bpara iade", r"\bise yaramadi",
+    r"\byanlis (urun|renk|beden|numara|siparis|ton)", r"\bkiril(mis|di)", r"\byirtil",
+    r"\bmemnun (degil|kalmadi)", r"\bberbat", r"\bcevap (yok|vermiyor|alamiyorum)",
     r"\b(refund\w*|return\w*|complain\w*|damaged|broken|wrong item|cancel\w*)\b",
 ])
 
@@ -63,8 +77,10 @@ IADE_SIKAYET = _derle([
 
 SPAM = _derle([
     r"\b(bit\.ly|tinyurl\.com|goo\.gl|cutt\.ly|t\.co)/", r"\btakipci", r"\bfollower",
-    r"\bbegeni (satin|kas)", r"\bkripto", r"\bbahis\b", r"\bbedava\b",
+    r"\bbegeni (satin|kas)", r"\bkripto", r"\bbahis\b",
 ])
+# "bedava" spam listesinden çıkarıldı: "2 alana 1 bedava kampanyanız geçerli mi?" gerçek bir müşteri
+# sorusu. Spam'i bağlantı ve takipçi kalıpları belirliyor.
 
 # --- Sipariş --------------------------------------------------------------
 
@@ -83,14 +99,14 @@ DIYEZ_NO = re.compile(r"#\s*(\d{1,9})\b")
 SIPARIS_KISISEL = _derle([
     r"\bsiparis(im|imin|imi|ime|imde|imiz|imizin)\b", r"\bkargo(m|mu|mun)\b",
     r"\bpaketim", r"\belime (ulasmadi|gecmedi)", r"\bteslim (alamadim|edilmedi)",
-    r"\bgelmedi\b",
+    r"\bgelmedi\b", r"\bverdigim siparis", r"\bsiparis ne zaman", r"\b(siparis|kargo) takip",
     r"\b(my order|where is my|track my|tracking)\b",
 ])
 
 # --- Fiyat ----------------------------------------------------------------
 
 FIYAT = _derle([
-    r"\bfiyat", r"\bne kadar\b(?! (sure|zaman|bekle|gun))", r"\bkac (tl|lira|para)\b",
+    r"\bfiyat", r"\bne kadar\b(?! (sure|zaman|bekle|gun))", r"\bkac (tl|lira|para)\b", r"\bkac(a|tan)\b",
     r"\bucret", r"\bindirim", r"\bkampanya", r"\bkupon", r"\bpromosyon",
     r"\b(price\w*|how much|cost\w*|discount\w*|coupon\w*)\b",
 ])
@@ -131,6 +147,11 @@ URUN_SORU_BASLIKLARI: list[tuple[re.Pattern, str]] = [
 ]
 
 URUN_GENEL = _derle([r"\burun(ler|un|unuz|leriniz)?\b", r"\bingredient", r"\bskin type"])
+
+# Genel "ürün" kelimesi ancak mesaj bir soruysa ürün sorusu sayılır:
+# "Teşekkürler, ürünler çok güzel" bir soru değil.
+SORU = re.compile(r"\?|\bm(i|u)(sin|siniz|dir|yim|yiz)?\b|\b(nasil|hangi|neden|nerede|ne zaman|kac)\b|"
+                  r"^(is|are|do|does|can|could|what|which|how)\b")
 
 # --- Diğer (genel bilgi) --------------------------------------------------
 
@@ -198,6 +219,10 @@ def siniflandir(mesaj: str) -> Siniflandirma:
     dil = dil_tespit(mesaj or "")
 
     istenmeyen = _eslesenler(ISTENMEYEN_ETKI, metin)
+    if not istenmeyen:
+        sonra, vucut = KULLANIM_SONRASI.search(metin), VUCUT.search(metin)
+        if sonra and vucut:
+            istenmeyen = [f"kullanım sonrası şikâyet: '{sonra.group(0)}' + '{vucut.group(0)}'"]
     iade = _eslesenler(IADE_SIKAYET, metin)
     spam = _eslesenler(SPAM, metin)
     kisisel = _eslesenler(SIPARIS_KISISEL, metin)
@@ -212,7 +237,7 @@ def siniflandir(mesaj: str) -> Siniflandirma:
     basliklar = [b for d, b in URUN_SORU_BASLIKLARI if d.search(metin)]
     if "içerik" in basliklar and any(b.endswith(" içeriği") for b in basliklar):
         basliklar.remove("içerik")  # "alkol içeriği" varken genel "içerik" tekrar olur
-    urun_genel = _eslesenler(URUN_GENEL, metin)
+    urun_genel = _eslesenler(URUN_GENEL, metin) if SORU.search(metin) else []
     urun_sinyali = ([urun[0]] if urun else []) + basliklar + urun_genel
 
     siparis_sinyali = kisisel + [f"sipariş no {n}" for n in nolar]

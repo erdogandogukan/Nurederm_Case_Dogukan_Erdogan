@@ -88,5 +88,36 @@ class Kenarlar(unittest.TestCase):
         self.assertEqual(dil_tespit(MESAJLAR[10]["mesaj"]), "tr")  # Türkçe karakter yok ama Türkçe
 
 
+class DegerlendirmedenGelenler(unittest.TestCase):
+    """degerlendirme/gelistirme_seti.json ilk ölçümünde kaçan mesajlar (bkz. README)."""
+
+    def test_kullanim_sonrasi_sikayet_belirti_listede_olmasa_da_insana_gider(self):
+        s = siniflandir("Kremi sürdükten sonra yüzümde küçük kabarcıklar çıktı, normal mi?")
+        self.assertEqual(s.konu, "istenmeyen-etki")  # önce: urun-sorusu → otomatik cevap
+
+    def test_sikayet_siparis_numarasindan_once_gelir(self):
+        s = siniflandir("Yanlış renk ruj gönderilmiş, siparişim 45 numara")
+        self.assertEqual(s.konu, "iade-sikayet")  # önce: siparis-durumu
+
+    def test_para_iadesi_talebi(self):
+        self.assertEqual(siniflandir("Paramı geri istiyorum, ürün hiç işe yaramadı").konu, "iade-sikayet")
+
+    def test_bedava_kelimesi_tek_basina_spam_degil(self):
+        s = siniflandir("2 alana 1 bedava kampanyanız hâlâ geçerli mi?")
+        self.assertFalse(s.spam)
+        self.assertEqual(s.konu, "fiyat")
+
+    def test_soru_olmayan_urun_bahsi_urun_sorusu_degil(self):
+        self.assertEqual(siniflandir("Teşekkürler, ürünler çok güzel 😊").konu, "diger")
+
+    def test_gelistirme_setinde_hicbir_hassas_mesaj_otomatik_cevaplanmaz(self):
+        from siniflandirici import HASSAS_KONULAR
+        yol = KLASOR / "degerlendirme" / "gelistirme_seti.json"
+        for o in json.loads(yol.read_text(encoding="utf-8")):
+            if o["beklenen"] in HASSAS_KONULAR:
+                with self.subTest(id=o["id"], mesaj=o["mesaj"]):
+                    self.assertIn(siniflandir(o["mesaj"]).konu, HASSAS_KONULAR)
+
+
 if __name__ == "__main__":
     unittest.main()
