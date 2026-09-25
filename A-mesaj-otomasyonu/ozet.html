@@ -60,20 +60,26 @@
 <body>
 <main>
   <h1>Müşteri Mesajları — İş Listesi Özeti</h1>
-  <p class="alt">15 mesaj işlendi · oluşturulma: 25.09.2026 11:28 · kaynak: mesajlar.json + DummyJSON API</p>
+  <p class="alt">15 mesaj işlendi · oluşturulma: 25.09.2026 12:39 · kaynak: mesajlar.json + DummyJSON API</p>
 
   <section class="kpi">
     <div><b>15</b><span>Toplam mesaj</span></div>
-    <div class="kirmizi"><b>4</b><span>İnsana devredilecek</span></div>
-    <div class="yesil"><b>10</b><span>Otomatik taslak hazır</span></div>
+    <div class="kirmizi"><b>11</b><span>İnsana devredilecek</span></div>
+    <div class="yesil"><b>3</b><span>Otomatik taslak hazır</span></div>
     <div><b>1</b><span>Yanıtlanmayacak (spam)</span></div>
   </section>
 
   <h2>Konu bazında</h2>
   <table>
     <thead><tr><th>Konu</th><th class="sayi">Adet</th><th>Dağılım</th><th class="sayi">Devredilen</th></tr></thead>
-    <tbody><tr><td><span class="etiket k-istenmeyen-etki">İstenmeyen etki</span></td><td class="sayi">1</td><td class="cubuk"><span style="width:6.7%"></span></td><td class="sayi">1</td></tr><tr><td><span class="etiket k-iade-sikayet">İade / şikâyet</span></td><td class="sayi">1</td><td class="cubuk"><span style="width:6.7%"></span></td><td class="sayi">1</td></tr><tr><td><span class="etiket k-siparis-durumu">Sipariş durumu</span></td><td class="sayi">5</td><td class="cubuk"><span style="width:33.3%"></span></td><td class="sayi">2</td></tr><tr><td><span class="etiket k-fiyat">Fiyat</span></td><td class="sayi">2</td><td class="cubuk"><span style="width:13.3%"></span></td><td class="sayi">0</td></tr><tr><td><span class="etiket k-urun-sorusu">Ürün sorusu</span></td><td class="sayi">4</td><td class="cubuk"><span style="width:26.7%"></span></td><td class="sayi">0</td></tr><tr><td><span class="etiket k-diger">Diğer</span></td><td class="sayi">2</td><td class="cubuk"><span style="width:13.3%"></span></td><td class="sayi">0</td></tr></tbody>
-    <tfoot><tr><td>Toplam</td><td class="sayi">15</td><td></td><td class="sayi">4</td></tr></tfoot>
+    <tbody><tr><td><span class="etiket k-istenmeyen-etki">İstenmeyen etki</span></td><td class="sayi">1</td><td class="cubuk"><span style="width:6.7%"></span></td><td class="sayi">1</td></tr><tr><td><span class="etiket k-iade-sikayet">İade / şikâyet</span></td><td class="sayi">1</td><td class="cubuk"><span style="width:6.7%"></span></td><td class="sayi">1</td></tr><tr><td><span class="etiket k-siparis-durumu">Sipariş durumu</span></td><td class="sayi">5</td><td class="cubuk"><span style="width:33.3%"></span></td><td class="sayi">3</td></tr><tr><td><span class="etiket k-fiyat">Fiyat</span></td><td class="sayi">2</td><td class="cubuk"><span style="width:13.3%"></span></td><td class="sayi">1</td></tr><tr><td><span class="etiket k-urun-sorusu">Ürün sorusu</span></td><td class="sayi">4</td><td class="cubuk"><span style="width:26.7%"></span></td><td class="sayi">4</td></tr><tr><td><span class="etiket k-diger">Diğer</span></td><td class="sayi">2</td><td class="cubuk"><span style="width:13.3%"></span></td><td class="sayi">1</td></tr></tbody>
+    <tfoot><tr><td>Toplam</td><td class="sayi">15</td><td></td><td class="sayi">11</td></tr></tfoot>
+  </table>
+
+  <h2>Devir nedenleri</h2>
+  <table>
+    <thead><tr><th>Neden</th><th class="sayi">Adet</th><th>Mesajlar</th></tr></thead>
+    <tbody><tr><td>sipariş doğrulanamadı</td><td class="sayi">2</td><td>#1, #3</td></tr><tr><td>hassas konu</td><td class="sayi">2</td><td>#4, #5</td></tr><tr><td>sistemde olmayan bilgi — temsilci tamamlamalı</td><td class="sayi">7</td><td>#8, #9, #11, #12, #13, #14, #15</td></tr></tbody>
   </table>
 
   <h2>Talepler</h2>
@@ -82,14 +88,14 @@
         <header>
           <span class="no">#1</span>
           <span class="etiket k-siparis-durumu">Sipariş durumu</span>
-          <span class="rozet devret">Temsilciye devret</span>
+          <span class="rozet devret">Temsilciye devret</span> <span class="rozet yok">sipariş doğrulanamadı</span>
           <span class="meta">whatsapp · müşteri 7</span>
         </header>
         <p class="mesaj">“Merhaba, 12 numaralı siparişim nerede? Ne zaman kargoya verilir?”</p>
         <div class="taslak">Merhaba,
 12 numaralı sipariş için hesabınızla eşleşen bir kayıt bulamadık. Sipariş numaranızı kontrol edip tekrar yazabilirsiniz; talebinizi ayrıca müşteri temsilcimize ilettik, gerekirse sizinle iletişime geçecek.
 İyi günler dileriz.</div>
-        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 7 · Gerekçe: &#x27;siparisim&#x27;, &#x27;sipariş no 12&#x27;. GÜVENLİK: Sipariş #12 başka bir müşteriye ait (userId ≠ musteri_id) → sipariş bilgisi paylaşılmadı, temsilciye devredildi.</p>
+        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 7 · Gerekçe: &#x27;siparisim&#x27;, &#x27;sipariş no 12&#x27;. GÜVENLİK: Sipariş #12 başka bir müşteriye ait (userId ≠ musteri_id) → sipariş bilgisi paylaşılmadı, temsilciye devredildi. Devir nedeni: sipariş doğrulanamadı.</p>
       </article>
       <article class="talep">
         <header>
@@ -100,7 +106,7 @@
         </header>
         <p class="mesaj">“5 numaralı siparişimin durumu nedir acaba?”</p>
         <div class="taslak">Merhaba,
-5 numaralı siparişinizi kontrol ettik. Siparişinizdeki ürünler: Samsung Galaxy Tab White (4 adet), Soft Drinks (4 adet), Powder Canister (4 adet). Toplam tutar: 1.467,88 $. Kargo ve teslimat durumunu en kısa sürede ayrıca bildireceğiz.
+5 numaralı siparişinizi kontrol ettik. Siparişinizdeki ürünler: Samsung Galaxy Tab White (4 adet), Soft Drinks (4 adet), Powder Canister (4 adet). Toplam tutar: 1.467,88 $.
 İyi günler dileriz.</div>
         <p class="not"><b>Not:</b> Kanal: instagram · Müşteri: 5 · Gerekçe: &#x27;siparisimin&#x27;, &#x27;sipariş no 5&#x27;. Sipariş #5: bulundu, sahibi mesajı yazan müşteri (userId = musteri_id) → 3 ürün ve toplam tutar paylaşıldı. API&#x27;de kargo/teslimat durumu alanı yok; temsilci kargo bilgisini ekleyebilir.</p>
       </article>
@@ -108,40 +114,40 @@
         <header>
           <span class="no">#3</span>
           <span class="etiket k-siparis-durumu">Sipariş durumu</span>
-          <span class="rozet devret">Temsilciye devret</span>
+          <span class="rozet devret">Temsilciye devret</span> <span class="rozet yok">sipariş doğrulanamadı</span>
           <span class="meta">whatsapp · müşteri 22</span>
         </header>
         <p class="mesaj">“9999 numaralı siparişim hâlâ elime ulaşmadı, kontrol eder misiniz?”</p>
         <div class="taslak">Merhaba,
 9999 numaralı sipariş için hesabınızla eşleşen bir kayıt bulamadık. Sipariş numaranızı kontrol edip tekrar yazabilirsiniz; talebinizi ayrıca müşteri temsilcimize ilettik, gerekirse sizinle iletişime geçecek.
 İyi günler dileriz.</div>
-        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 22 · Gerekçe: &#x27;siparisim&#x27;, &#x27;elime ulasmadi&#x27;, &#x27;sipariş no 9999&#x27;. Sipariş #9999: API &#x27;not found&#x27; döndü. Müşteriden numarayı teyit etmesi istendi; temsilci müşterinin kayıtlı siparişlerini kontrol etmeli.</p>
+        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 22 · Gerekçe: &#x27;siparisim&#x27;, &#x27;elime ulasmadi&#x27;, &#x27;sipariş no 9999&#x27;. Sipariş #9999: API &#x27;not found&#x27; döndü. Müşteriden numarayı teyit etmesi istendi; temsilci müşterinin kayıtlı siparişlerini kontrol etmeli. Devir nedeni: sipariş doğrulanamadı.</p>
       </article>
       <article class="talep devir">
         <header>
           <span class="no">#4</span>
           <span class="etiket k-istenmeyen-etki">İstenmeyen etki</span>
-          <span class="rozet devret">Temsilciye devret</span> <span class="rozet acil">Öncelik: yüksek</span>
+          <span class="rozet devret">Temsilciye devret</span> <span class="rozet acil">Öncelik: yüksek</span> <span class="rozet yok">hassas konu</span>
           <span class="meta">instagram · müşteri 14</span>
         </header>
         <p class="mesaj">“Dün aldığım serumu kullandım, yüzüm yandı ve kızardı. Ne yapmalıyım?”</p>
         <div class="taslak">Merhaba,
 Yaşadığınız durum için çok üzgünüz. Mesajınızı uzman müşteri temsilcimize ilettik; en kısa sürede sizinle iletişime geçecek.
 İyi günler dileriz.</div>
-        <p class="not"><b>Not:</b> Kanal: instagram · Müşteri: 14 · Gerekçe: &#x27;yandi&#x27;, &#x27;kizar&#x27;. İkincil konu(lar): urun-sorusu. ÖNCELİK: YÜKSEK (sağlık şikâyeti). Temsilci için: ürün adı, seri/lot no ve fotoğraf istenmeli; ciddi istenmeyen etki şüphesinde kozmetovijilans (TİTCK bildirimi) süreci değerlendirilmeli. Otomatik cevapta ürün önerisi/teşhis yok; yalnızca sabit devir bildirimi.</p>
+        <p class="not"><b>Not:</b> Kanal: instagram · Müşteri: 14 · Gerekçe: &#x27;yandi&#x27;, &#x27;kizar&#x27;. İkincil konu(lar): urun-sorusu. ÖNCELİK: YÜKSEK (sağlık şikâyeti). Temsilci için: ürün adı, seri/lot no ve fotoğraf istenmeli; ciddi istenmeyen etki şüphesinde kozmetovijilans (TİTCK bildirimi) süreci değerlendirilmeli. Otomatik cevapta ürün önerisi/teşhis yok; yalnızca sabit devir bildirimi. Devir nedeni: hassas konu.</p>
       </article>
       <article class="talep devir">
         <header>
           <span class="no">#5</span>
           <span class="etiket k-iade-sikayet">İade / şikâyet</span>
-          <span class="rozet devret">Temsilciye devret</span>
+          <span class="rozet devret">Temsilciye devret</span> <span class="rozet yok">hassas konu</span>
           <span class="meta">whatsapp · müşteri 18</span>
         </header>
         <p class="mesaj">“Kutu ezik geldi, ürünü iade etmek istiyorum.”</p>
         <div class="taslak">Merhaba,
 Yaşadığınız sorun için üzgünüz. Talebinizi müşteri temsilcimize ilettik; en kısa sürede sizinle iletişime geçecek.
 İyi günler dileriz.</div>
-        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 18 · Gerekçe: &#x27;iade&#x27;, &#x27;ezik&#x27;. Temsilci için: sipariş numarası ve hasar fotoğrafı istenip iade/değişim süreci başlatılmalı. Otomatik cevapta ürün önerisi/teşhis yok; yalnızca sabit devir bildirimi.</p>
+        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 18 · Gerekçe: &#x27;iade&#x27;, &#x27;ezik&#x27;. Temsilci için: sipariş numarası ve hasar fotoğrafı istenip iade/değişim süreci başlatılmalı. Otomatik cevapta ürün önerisi/teşhis yok; yalnızca sabit devir bildirimi. Devir nedeni: hassas konu.</p>
       </article>
       <article class="talep">
         <header>
@@ -152,7 +158,7 @@ Yaşadığınız sorun için üzgünüz. Talebinizi müşteri temsilcimize ilett
         </header>
         <p class="mesaj">“Hi, where is my order #3? It has been a week.”</p>
         <div class="taslak">Hi,
-We checked your order #3. Items: Fish Steak (x1), iPhone 13 Pro (x1), Realme X (x1), Man Short Sleeve Shirt (x5), Dior J&#x27;adore (x2), Party Glasses (x5). Order total: $1,794.85. We will update you on the shipping and delivery status shortly.
+We checked your order #3. Items: Fish Steak (x1), iPhone 13 Pro (x1), Realme X (x1), Man Short Sleeve Shirt (x5), Dior J&#x27;adore (x2), Party Glasses (x5). Order total: $1,794.85.
 Have a nice day!</div>
         <p class="not"><b>Not:</b> Kanal: instagram · Müşteri: 3 · Gerekçe: &#x27;where is my&#x27;, &#x27;sipariş no 3&#x27;. Mesaj İngilizce → taslak İngilizce. Sipariş #3: bulundu, sahibi mesajı yazan müşteri (userId = musteri_id) → 6 ürün ve toplam tutar paylaşıldı. API&#x27;de kargo/teslimat durumu alanı yok; temsilci kargo bilgisini ekleyebilir.</p>
       </article>
@@ -167,31 +173,31 @@ Have a nice day!</div>
         <div class="taslak bos">— cevap üretilmedi —</div>
         <p class="not"><b>Not:</b> Kanal: instagram · Müşteri: 27 · Gerekçe: &#x27;bit.ly/&#x27;, &#x27;takipci&#x27;. SPAM: kısaltılmış/şüpheli bağlantı içeriyor → yanıtlanmamalı, bağlantıya tıklanmamalı; hesap engellenip raporlanabilir.</p>
       </article>
-      <article class="talep">
+      <article class="talep devir">
         <header>
           <span class="no">#8</span>
           <span class="etiket k-siparis-durumu">Sipariş durumu</span>
-          <span class="rozet otomatik">Taslak hazır</span>
+          <span class="rozet devret">Temsilciye devret</span> <span class="rozet yok">sistemde olmayan bilgi — temsilci tamamlamalı</span>
           <span class="meta">whatsapp · müşteri 4</span>
         </header>
         <p class="mesaj">“Güneş kreminin fiyatı ne kadar? Bir de 4 numaralı siparişim ne zaman gelir?”</p>
         <div class="taslak">Merhaba,
-4 numaralı siparişinizi kontrol ettik. Siparişinizdeki ürünler: Sports Sneakers Off White Red (3 adet), Dior J&#x27;adore (4 adet). Toplam tutar: 689,93 $. Kargo ve teslimat durumunu en kısa sürede ayrıca bildireceğiz. Güneş kremi fiyatıyla ilgili güncel bilgiyi müşteri temsilcimiz kısa süre içinde iletecek.
+4 numaralı siparişinizi kontrol ettik. Siparişinizdeki ürünler: Sports Sneakers Off White Red (3 adet), Dior J&#x27;adore (4 adet). Toplam tutar: 689,93 $. Güneş kremi fiyatıyla ilgili güncel bilgiyi müşteri temsilcimiz kısa süre içinde iletecek.
 İyi günler dileriz.</div>
-        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 4 · Gerekçe: &#x27;siparisim&#x27;, &#x27;sipariş no 4&#x27;. İkincil konu(lar): fiyat, urun-sorusu. Sipariş #4: bulundu, sahibi mesajı yazan müşteri (userId = musteri_id) → 2 ürün ve toplam tutar paylaşıldı. API&#x27;de kargo/teslimat durumu alanı yok; temsilci kargo bilgisini ekleyebilir. Ürün araması (güneş kremi): &#x27;sunscreen&#x27; → 0 sonuç, 0 uygun; &#x27;sunblock&#x27; → 0 sonuç, 0 uygun.</p>
+        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 4 · Gerekçe: &#x27;siparisim&#x27;, &#x27;sipariş no 4&#x27;. İkincil konu(lar): fiyat, urun-sorusu. Sipariş #4: bulundu, sahibi mesajı yazan müşteri (userId = musteri_id) → 2 ürün ve toplam tutar paylaşıldı. API&#x27;de kargo/teslimat durumu alanı yok; temsilci kargo bilgisini ekleyebilir. Ürün araması (güneş kremi): &#x27;sunscreen&#x27; → 0 sonuç, 0 uygun; &#x27;sunblock&#x27; → 0 sonuç, 0 uygun. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı.</p>
       </article>
-      <article class="talep">
+      <article class="talep devir">
         <header>
           <span class="no">#9</span>
           <span class="etiket k-urun-sorusu">Ürün sorusu</span>
-          <span class="rozet otomatik">Taslak hazır</span>
+          <span class="rozet devret">Temsilciye devret</span> <span class="rozet yok">sistemde olmayan bilgi — temsilci tamamlamalı</span>
           <span class="meta">whatsapp · müşteri 1</span>
         </header>
         <p class="mesaj">“Retinol serumunuz var mı? Kuru ciltte kullanılır mı?”</p>
         <div class="taslak">Merhaba,
 Retinol serum ile ilgili stok durumu ve cilt tipine uygunluk konusundaki detaylı bilgiyi ürün uzmanımız kısa süre içinde iletecek.
 İyi günler dileriz.</div>
-        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 1 · Gerekçe: &#x27;retinol serum&#x27;, &#x27;stok durumu&#x27;, &#x27;cilt tipine uygunluk&#x27;. Ürün araması (retinol serum): &#x27;retinol&#x27; → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz.</p>
+        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 1 · Gerekçe: &#x27;retinol serum&#x27;, &#x27;stok durumu&#x27;, &#x27;cilt tipine uygunluk&#x27;. Ürün araması (retinol serum): &#x27;retinol&#x27; → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı.</p>
       </article>
       <article class="talep">
         <header>
@@ -202,74 +208,74 @@ Retinol serum ile ilgili stok durumu ve cilt tipine uygunluk konusundaki detayl�
         </header>
         <p class="mesaj">“Nemlendirici krem ne kadar?”</p>
         <div class="taslak">Merhaba,
-Nemlendirici krem için katalogumuzdaki ilgili ürün: Vaseline Men Body and Face Lotion — 9,99 $. Farklı bir ürünü soruyorsanız ürün adını paylaşırsanız hemen kontrol edelim.
+Nemlendirici krem için sistemimizde bulduğumuz en yakın ürün: Vaseline Men Body and Face Lotion — 9,99 $. Aradığınız ürün bu değilse ürün adını paylaşırsanız hemen kontrol edelim.
 İyi günler dileriz.</div>
         <p class="not"><b>Not:</b> Kanal: instagram · Müşteri: 2 · Gerekçe: &#x27;ne kadar&#x27;. İkincil konu(lar): urun-sorusu. Ürün araması (nemlendirici krem): &#x27;moisturizer&#x27; → 0 sonuç, 0 uygun; &#x27;lotion&#x27; → 1 sonuç, 1 uygun.</p>
       </article>
-      <article class="talep">
+      <article class="talep devir">
         <header>
           <span class="no">#11</span>
           <span class="etiket k-urun-sorusu">Ürün sorusu</span>
-          <span class="rozet otomatik">Taslak hazır</span>
+          <span class="rozet devret">Temsilciye devret</span> <span class="rozet yok">sistemde olmayan bilgi — temsilci tamamlamalı</span>
           <span class="meta">whatsapp · müşteri 8</span>
         </header>
         <p class="mesaj">“C vitamini serumu hangi cilt tipine uygundur?”</p>
         <div class="taslak">Merhaba,
 C vitamini serumu ile ilgili cilt tipine uygunluk konusundaki detaylı bilgiyi ürün uzmanımız kısa süre içinde iletecek.
 İyi günler dileriz.</div>
-        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 8 · Gerekçe: &#x27;C vitamini serumu&#x27;, &#x27;cilt tipine uygunluk&#x27;. Ürün araması (C vitamini serumu): &#x27;vitamin c&#x27; → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz.</p>
+        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 8 · Gerekçe: &#x27;C vitamini serumu&#x27;, &#x27;cilt tipine uygunluk&#x27;. Ürün araması (C vitamini serumu): &#x27;vitamin c&#x27; → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı.</p>
       </article>
-      <article class="talep">
+      <article class="talep devir">
         <header>
           <span class="no">#12</span>
           <span class="etiket k-diger">Diğer</span>
-          <span class="rozet otomatik">Taslak hazır</span>
+          <span class="rozet devret">Temsilciye devret</span> <span class="rozet yok">sistemde olmayan bilgi — temsilci tamamlamalı</span>
           <span class="meta">instagram · müşteri 6</span>
         </header>
         <p class="mesaj">“Siparişler hangi kargo firmasıyla gönderiliyor?”</p>
         <div class="taslak">Merhaba,
 Siparişlerimiz [KARGO FİRMASI] ile gönderilmektedir. Başka bir sorunuz olursa yardımcı olmaktan memnuniyet duyarız.
 İyi günler dileriz.</div>
-        <p class="not"><b>Not:</b> Kanal: instagram · Müşteri: 6 · Gerekçe: &#x27;kargo (genel soru; kişisel sipariş referansı/numarası yok)&#x27;. Belirli bir siparişle ilgili değil, genel kargo sorusu (SSS). Kargo firması bilgisi sistemde yok → göndermeden önce [KARGO FİRMASI] alanını doldurun.</p>
+        <p class="not"><b>Not:</b> Kanal: instagram · Müşteri: 6 · Gerekçe: &#x27;kargo (genel soru; kişisel sipariş referansı/numarası yok)&#x27;. Belirli bir siparişle ilgili değil, genel kargo sorusu (SSS). Kargo firması bilgisi sistemde yok → göndermeden önce [KARGO FİRMASI] alanını doldurun. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı.</p>
       </article>
-      <article class="talep">
+      <article class="talep devir">
         <header>
           <span class="no">#13</span>
           <span class="etiket k-urun-sorusu">Ürün sorusu</span>
-          <span class="rozet otomatik">Taslak hazır</span>
+          <span class="rozet devret">Temsilciye devret</span> <span class="rozet yok">sistemde olmayan bilgi — temsilci tamamlamalı</span>
           <span class="meta">whatsapp · müşteri 9</span>
         </header>
         <p class="mesaj">“Tonik 200 ml mi? İçeriğinde alkol var mı?”</p>
         <div class="taslak">Merhaba,
 Tonik ile ilgili hacim ve alkol içeriği konusundaki detaylı bilgiyi ürün uzmanımız kısa süre içinde iletecek.
 İyi günler dileriz.</div>
-        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 9 · Gerekçe: &#x27;tonik&#x27;, &#x27;hacim&#x27;, &#x27;alkol içeriği&#x27;. Ürün araması (tonik): &#x27;toner&#x27; → 0 sonuç, 0 uygun; &#x27;tonic&#x27; → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz.</p>
+        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 9 · Gerekçe: &#x27;tonik&#x27;, &#x27;hacim&#x27;, &#x27;alkol içeriği&#x27;. Ürün araması (tonik): &#x27;toner&#x27; → 0 sonuç, 0 uygun; &#x27;tonic&#x27; → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı.</p>
       </article>
-      <article class="talep">
+      <article class="talep devir">
         <header>
           <span class="no">#14</span>
           <span class="etiket k-fiyat">Fiyat</span>
-          <span class="rozet otomatik">Taslak hazır</span>
+          <span class="rozet devret">Temsilciye devret</span> <span class="rozet yok">sistemde olmayan bilgi — temsilci tamamlamalı</span>
           <span class="meta">instagram · müşteri 10</span>
         </header>
         <p class="mesaj">“İndirim kodunuz var mı, fiyat listesi paylaşır mısınız?”</p>
         <div class="taslak">Merhaba,
-Cilt bakımı ve makyaj kategorilerindeki güncel fiyatlarımız: Attitude Super Leaves Hand Soap — 8,99 $; Olay Ultra Moisture Shea Butter Body Wash — 12,99 $; Vaseline Men Body and Face Lotion — 9,99 $; Essence Mascara Lash Princess — 9,99 $; Eyeshadow Palette with Mirror — 19,99 $; Powder Canister — 14,99 $; Red Lipstick — 12,99 $; Red Nail Polish — 8,99 $. İndirim kodu ve güncel kampanyalar hakkındaki bilgiyi müşteri temsilcimiz ayrıca paylaşacak.
+Sistemimizdeki cilt bakımı ve makyaj ürünlerinin fiyatları: Attitude Super Leaves Hand Soap — 8,99 $; Olay Ultra Moisture Shea Butter Body Wash — 12,99 $; Vaseline Men Body and Face Lotion — 9,99 $; Essence Mascara Lash Princess — 9,99 $; Eyeshadow Palette with Mirror — 19,99 $; Powder Canister — 14,99 $; Red Lipstick — 12,99 $; Red Nail Polish — 8,99 $. İndirim kodu ve güncel kampanyalar hakkındaki bilgiyi müşteri temsilcimiz ayrıca paylaşacak.
 İyi günler dileriz.</div>
-        <p class="not"><b>Not:</b> Kanal: instagram · Müşteri: 10 · Gerekçe: &#x27;fiyat&#x27;, &#x27;indirim&#x27;. Fiyat listesi: skin-care + beauty kategorilerinden 8 ürün. İndirim kodu sistemde yok; uydurulmadı, temsilci eklemeli.</p>
+        <p class="not"><b>Not:</b> Kanal: instagram · Müşteri: 10 · Gerekçe: &#x27;fiyat&#x27;, &#x27;indirim&#x27;. Fiyat listesi: skin-care + beauty kategorilerinden 8 ürün. İndirim kodu sistemde yok; uydurulmadı, temsilci eklemeli. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı.</p>
       </article>
-      <article class="talep">
+      <article class="talep devir">
         <header>
           <span class="no">#15</span>
           <span class="etiket k-urun-sorusu">Ürün sorusu</span>
-          <span class="rozet otomatik">Taslak hazır</span>
+          <span class="rozet devret">Temsilciye devret</span> <span class="rozet yok">sistemde olmayan bilgi — temsilci tamamlamalı</span>
           <span class="meta">whatsapp · müşteri 11</span>
         </header>
         <p class="mesaj">“Merhaba, ürünleriniz hayvanlar üzerinde test ediliyor mu?”</p>
         <div class="taslak">Merhaba,
 Hayvan deneyi politikası konusundaki detaylı bilgiyi ürün uzmanımız kısa süre içinde iletecek.
 İyi günler dileriz.</div>
-        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 11 · Gerekçe: &#x27;hayvan deneyi politikası&#x27;, &#x27;urunleriniz&#x27;. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz.</p>
+        <p class="not"><b>Not:</b> Kanal: whatsapp · Müşteri: 11 · Gerekçe: &#x27;hayvan deneyi politikası&#x27;, &#x27;urunleriniz&#x27;. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı.</p>
       </article>
 </main>
 </body>

@@ -26,6 +26,11 @@ def sayimlar(talepler) -> tuple[Counter, Counter]:
     return konu, devir
 
 
+def devir_nedenleri(talepler) -> Counter:
+    """Devirleri nedenine göre sayar (hassas konu / sipariş doğrulanamadı / eksik bilgi / belirsiz)."""
+    return Counter(t.devir_nedeni for t in talepler if t.devret)
+
+
 def terminal_ozeti(talepler) -> str:
     konu, devir = sayimlar(talepler)
     cizgi = "─" * 44
@@ -43,6 +48,8 @@ def terminal_ozeti(talepler) -> str:
         "",
         f"İnsana devredilecek: {sum(devir.values())} mesaj → "
         + ", ".join(f"#{t.id} ({t.konu})" for t in talepler if t.devret),
+        *[f"  · {neden}: {adet} ({', '.join(f'#{t.id}' for t in talepler if t.devir_nedeni == neden)})"
+          for neden, adet in devir_nedenleri(talepler).items()],
         f"Otomatik taslak hazır (devir yok): {sum(1 for t in talepler if not t.devret and t.cevap_taslagi)}",
         f"Yanıtlanmayacak (spam): {sum(1 for t in talepler if t.cevap_taslagi is None)}",
         "",
@@ -65,6 +72,11 @@ def html_ozeti(talepler, olusturma: datetime) -> str:
     devir_toplam = sum(devir.values())
     taslak_hazir = sum(1 for t in talepler if not t.devret and t.cevap_taslagi)
     spam = sum(1 for t in talepler if t.cevap_taslagi is None)
+    nedenler_html = "".join(
+        f'<tr><td>{_e(neden)}</td><td class="sayi">{adet}</td>'
+        f'<td>{_e(", ".join(f"#{t.id}" for t in talepler if t.devir_nedeni == neden))}</td></tr>'
+        for neden, adet in devir_nedenleri(talepler).items()
+    )
 
     konu_satirlari = []
     for k in KONU_SIRASI:
@@ -83,7 +95,9 @@ def html_ozeti(talepler, olusturma: datetime) -> str:
                 '<span class="rozet yok">Yanıtlanmayacak</span>'
         if t.oncelik == "yüksek":
             rozet += ' <span class="rozet acil">Öncelik: yüksek</span>'
-        taslak = (f'<div class="taslak">{_e(t.cevap_taslagi)}</div>' if t.cevap_taslagi
+        if t.devret and t.devir_nedeni:
+            rozet += f' <span class="rozet yok">{_e(t.devir_nedeni)}</span>'
+        taslak =(f'<div class="taslak">{_e(t.cevap_taslagi)}</div>' if t.cevap_taslagi
                   else '<div class="taslak bos">— cevap üretilmedi —</div>')
         kartlar.append(f"""
       <article class="talep{' devir' if t.devret else ''}">
@@ -174,6 +188,12 @@ def html_ozeti(talepler, olusturma: datetime) -> str:
     <thead><tr><th>Konu</th><th class="sayi">Adet</th><th>Dağılım</th><th class="sayi">Devredilen</th></tr></thead>
     <tbody>{''.join(konu_satirlari)}</tbody>
     <tfoot><tr><td>Toplam</td><td class="sayi">{len(talepler)}</td><td></td><td class="sayi">{devir_toplam}</td></tr></tfoot>
+  </table>
+
+  <h2>Devir nedenleri</h2>
+  <table>
+    <thead><tr><th>Neden</th><th class="sayi">Adet</th><th>Mesajlar</th></tr></thead>
+    <tbody>{nedenler_html}</tbody>
   </table>
 
   <h2>Talepler</h2>

@@ -4,13 +4,13 @@
     "konu": "siparis-durumu",
     "devret": true,
     "cevap_taslagi": "Merhaba,\n12 numaralı sipariş için hesabınızla eşleşen bir kayıt bulamadık. Sipariş numaranızı kontrol edip tekrar yazabilirsiniz; talebinizi ayrıca müşteri temsilcimize ilettik, gerekirse sizinle iletişime geçecek.\nİyi günler dileriz.",
-    "not": "Kanal: whatsapp · Müşteri: 7 · Gerekçe: 'siparisim', 'sipariş no 12'. GÜVENLİK: Sipariş #12 başka bir müşteriye ait (userId ≠ musteri_id) → sipariş bilgisi paylaşılmadı, temsilciye devredildi."
+    "not": "Kanal: whatsapp · Müşteri: 7 · Gerekçe: 'siparisim', 'sipariş no 12'. GÜVENLİK: Sipariş #12 başka bir müşteriye ait (userId ≠ musteri_id) → sipariş bilgisi paylaşılmadı, temsilciye devredildi. Devir nedeni: sipariş doğrulanamadı."
   },
   {
     "id": 2,
     "konu": "siparis-durumu",
     "devret": false,
-    "cevap_taslagi": "Merhaba,\n5 numaralı siparişinizi kontrol ettik. Siparişinizdeki ürünler: Samsung Galaxy Tab White (4 adet), Soft Drinks (4 adet), Powder Canister (4 adet). Toplam tutar: 1.467,88 $. Kargo ve teslimat durumunu en kısa sürede ayrıca bildireceğiz.\nİyi günler dileriz.",
+    "cevap_taslagi": "Merhaba,\n5 numaralı siparişinizi kontrol ettik. Siparişinizdeki ürünler: Samsung Galaxy Tab White (4 adet), Soft Drinks (4 adet), Powder Canister (4 adet). Toplam tutar: 1.467,88 $.\nİyi günler dileriz.",
     "not": "Kanal: instagram · Müşteri: 5 · Gerekçe: 'siparisimin', 'sipariş no 5'. Sipariş #5: bulundu, sahibi mesajı yazan müşteri (userId = musteri_id) → 3 ürün ve toplam tutar paylaşıldı. API'de kargo/teslimat durumu alanı yok; temsilci kargo bilgisini ekleyebilir."
   },
   {
@@ -18,27 +18,27 @@
     "konu": "siparis-durumu",
     "devret": true,
     "cevap_taslagi": "Merhaba,\n9999 numaralı sipariş için hesabınızla eşleşen bir kayıt bulamadık. Sipariş numaranızı kontrol edip tekrar yazabilirsiniz; talebinizi ayrıca müşteri temsilcimize ilettik, gerekirse sizinle iletişime geçecek.\nİyi günler dileriz.",
-    "not": "Kanal: whatsapp · Müşteri: 22 · Gerekçe: 'siparisim', 'elime ulasmadi', 'sipariş no 9999'. Sipariş #9999: API 'not found' döndü. Müşteriden numarayı teyit etmesi istendi; temsilci müşterinin kayıtlı siparişlerini kontrol etmeli."
+    "not": "Kanal: whatsapp · Müşteri: 22 · Gerekçe: 'siparisim', 'elime ulasmadi', 'sipariş no 9999'. Sipariş #9999: API 'not found' döndü. Müşteriden numarayı teyit etmesi istendi; temsilci müşterinin kayıtlı siparişlerini kontrol etmeli. Devir nedeni: sipariş doğrulanamadı."
   },
   {
     "id": 4,
     "konu": "istenmeyen-etki",
     "devret": true,
     "cevap_taslagi": "Merhaba,\nYaşadığınız durum için çok üzgünüz. Mesajınızı uzman müşteri temsilcimize ilettik; en kısa sürede sizinle iletişime geçecek.\nİyi günler dileriz.",
-    "not": "Kanal: instagram · Müşteri: 14 · Gerekçe: 'yandi', 'kizar'. İkincil konu(lar): urun-sorusu. ÖNCELİK: YÜKSEK (sağlık şikâyeti). Temsilci için: ürün adı, seri/lot no ve fotoğraf istenmeli; ciddi istenmeyen etki şüphesinde kozmetovijilans (TİTCK bildirimi) süreci değerlendirilmeli. Otomatik cevapta ürün önerisi/teşhis yok; yalnızca sabit devir bildirimi."
+    "not": "Kanal: instagram · Müşteri: 14 · Gerekçe: 'yandi', 'kizar'. İkincil konu(lar): urun-sorusu. ÖNCELİK: YÜKSEK (sağlık şikâyeti). Temsilci için: ürün adı, seri/lot no ve fotoğraf istenmeli; ciddi istenmeyen etki şüphesinde kozmetovijilans (TİTCK bildirimi) süreci değerlendirilmeli. Otomatik cevapta ürün önerisi/teşhis yok; yalnızca sabit devir bildirimi. Devir nedeni: hassas konu."
   },
   {
     "id": 5,
     "konu": "iade-sikayet",
     "devret": true,
     "cevap_taslagi": "Merhaba,\nYaşadığınız sorun için üzgünüz. Talebinizi müşteri temsilcimize ilettik; en kısa sürede sizinle iletişime geçecek.\nİyi günler dileriz.",
-    "not": "Kanal: whatsapp · Müşteri: 18 · Gerekçe: 'iade', 'ezik'. Temsilci için: sipariş numarası ve hasar fotoğrafı istenip iade/değişim süreci başlatılmalı. Otomatik cevapta ürün önerisi/teşhis yok; yalnızca sabit devir bildirimi."
+    "not": "Kanal: whatsapp · Müşteri: 18 · Gerekçe: 'iade', 'ezik'. Temsilci için: sipariş numarası ve hasar fotoğrafı istenip iade/değişim süreci başlatılmalı. Otomatik cevapta ürün önerisi/teşhis yok; yalnızca sabit devir bildirimi. Devir nedeni: hassas konu."
   },
   {
     "id": 6,
     "konu": "siparis-durumu",
     "devret": false,
-    "cevap_taslagi": "Hi,\nWe checked your order #3. Items: Fish Steak (x1), iPhone 13 Pro (x1), Realme X (x1), Man Short Sleeve Shirt (x5), Dior J'adore (x2), Party Glasses (x5). Order total: $1,794.85. We will update you on the shipping and delivery status shortly.\nHave a nice day!",
+    "cevap_taslagi": "Hi,\nWe checked your order #3. Items: Fish Steak (x1), iPhone 13 Pro (x1), Realme X (x1), Man Short Sleeve Shirt (x5), Dior J'adore (x2), Party Glasses (x5). Order total: $1,794.85.\nHave a nice day!",
     "not": "Kanal: instagram · Müşteri: 3 · Gerekçe: 'where is my', 'sipariş no 3'. Mesaj İngilizce → taslak İngilizce. Sipariş #3: bulundu, sahibi mesajı yazan müşteri (userId = musteri_id) → 6 ürün ve toplam tutar paylaşıldı. API'de kargo/teslimat durumu alanı yok; temsilci kargo bilgisini ekleyebilir."
   },
   {
@@ -51,57 +51,57 @@
   {
     "id": 8,
     "konu": "siparis-durumu",
-    "devret": false,
-    "cevap_taslagi": "Merhaba,\n4 numaralı siparişinizi kontrol ettik. Siparişinizdeki ürünler: Sports Sneakers Off White Red (3 adet), Dior J'adore (4 adet). Toplam tutar: 689,93 $. Kargo ve teslimat durumunu en kısa sürede ayrıca bildireceğiz. Güneş kremi fiyatıyla ilgili güncel bilgiyi müşteri temsilcimiz kısa süre içinde iletecek.\nİyi günler dileriz.",
-    "not": "Kanal: whatsapp · Müşteri: 4 · Gerekçe: 'siparisim', 'sipariş no 4'. İkincil konu(lar): fiyat, urun-sorusu. Sipariş #4: bulundu, sahibi mesajı yazan müşteri (userId = musteri_id) → 2 ürün ve toplam tutar paylaşıldı. API'de kargo/teslimat durumu alanı yok; temsilci kargo bilgisini ekleyebilir. Ürün araması (güneş kremi): 'sunscreen' → 0 sonuç, 0 uygun; 'sunblock' → 0 sonuç, 0 uygun."
+    "devret": true,
+    "cevap_taslagi": "Merhaba,\n4 numaralı siparişinizi kontrol ettik. Siparişinizdeki ürünler: Sports Sneakers Off White Red (3 adet), Dior J'adore (4 adet). Toplam tutar: 689,93 $. Güneş kremi fiyatıyla ilgili güncel bilgiyi müşteri temsilcimiz kısa süre içinde iletecek.\nİyi günler dileriz.",
+    "not": "Kanal: whatsapp · Müşteri: 4 · Gerekçe: 'siparisim', 'sipariş no 4'. İkincil konu(lar): fiyat, urun-sorusu. Sipariş #4: bulundu, sahibi mesajı yazan müşteri (userId = musteri_id) → 2 ürün ve toplam tutar paylaşıldı. API'de kargo/teslimat durumu alanı yok; temsilci kargo bilgisini ekleyebilir. Ürün araması (güneş kremi): 'sunscreen' → 0 sonuç, 0 uygun; 'sunblock' → 0 sonuç, 0 uygun. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı."
   },
   {
     "id": 9,
     "konu": "urun-sorusu",
-    "devret": false,
+    "devret": true,
     "cevap_taslagi": "Merhaba,\nRetinol serum ile ilgili stok durumu ve cilt tipine uygunluk konusundaki detaylı bilgiyi ürün uzmanımız kısa süre içinde iletecek.\nİyi günler dileriz.",
-    "not": "Kanal: whatsapp · Müşteri: 1 · Gerekçe: 'retinol serum', 'stok durumu', 'cilt tipine uygunluk'. Ürün araması (retinol serum): 'retinol' → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz."
+    "not": "Kanal: whatsapp · Müşteri: 1 · Gerekçe: 'retinol serum', 'stok durumu', 'cilt tipine uygunluk'. Ürün araması (retinol serum): 'retinol' → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı."
   },
   {
     "id": 10,
     "konu": "fiyat",
     "devret": false,
-    "cevap_taslagi": "Merhaba,\nNemlendirici krem için katalogumuzdaki ilgili ürün: Vaseline Men Body and Face Lotion — 9,99 $. Farklı bir ürünü soruyorsanız ürün adını paylaşırsanız hemen kontrol edelim.\nİyi günler dileriz.",
+    "cevap_taslagi": "Merhaba,\nNemlendirici krem için sistemimizde bulduğumuz en yakın ürün: Vaseline Men Body and Face Lotion — 9,99 $. Aradığınız ürün bu değilse ürün adını paylaşırsanız hemen kontrol edelim.\nİyi günler dileriz.",
     "not": "Kanal: instagram · Müşteri: 2 · Gerekçe: 'ne kadar'. İkincil konu(lar): urun-sorusu. Ürün araması (nemlendirici krem): 'moisturizer' → 0 sonuç, 0 uygun; 'lotion' → 1 sonuç, 1 uygun."
   },
   {
     "id": 11,
     "konu": "urun-sorusu",
-    "devret": false,
+    "devret": true,
     "cevap_taslagi": "Merhaba,\nC vitamini serumu ile ilgili cilt tipine uygunluk konusundaki detaylı bilgiyi ürün uzmanımız kısa süre içinde iletecek.\nİyi günler dileriz.",
-    "not": "Kanal: whatsapp · Müşteri: 8 · Gerekçe: 'C vitamini serumu', 'cilt tipine uygunluk'. Ürün araması (C vitamini serumu): 'vitamin c' → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz."
+    "not": "Kanal: whatsapp · Müşteri: 8 · Gerekçe: 'C vitamini serumu', 'cilt tipine uygunluk'. Ürün araması (C vitamini serumu): 'vitamin c' → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı."
   },
   {
     "id": 12,
     "konu": "diger",
-    "devret": false,
+    "devret": true,
     "cevap_taslagi": "Merhaba,\nSiparişlerimiz [KARGO FİRMASI] ile gönderilmektedir. Başka bir sorunuz olursa yardımcı olmaktan memnuniyet duyarız.\nİyi günler dileriz.",
-    "not": "Kanal: instagram · Müşteri: 6 · Gerekçe: 'kargo (genel soru; kişisel sipariş referansı/numarası yok)'. Belirli bir siparişle ilgili değil, genel kargo sorusu (SSS). Kargo firması bilgisi sistemde yok → göndermeden önce [KARGO FİRMASI] alanını doldurun."
+    "not": "Kanal: instagram · Müşteri: 6 · Gerekçe: 'kargo (genel soru; kişisel sipariş referansı/numarası yok)'. Belirli bir siparişle ilgili değil, genel kargo sorusu (SSS). Kargo firması bilgisi sistemde yok → göndermeden önce [KARGO FİRMASI] alanını doldurun. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı."
   },
   {
     "id": 13,
     "konu": "urun-sorusu",
-    "devret": false,
+    "devret": true,
     "cevap_taslagi": "Merhaba,\nTonik ile ilgili hacim ve alkol içeriği konusundaki detaylı bilgiyi ürün uzmanımız kısa süre içinde iletecek.\nİyi günler dileriz.",
-    "not": "Kanal: whatsapp · Müşteri: 9 · Gerekçe: 'tonik', 'hacim', 'alkol içeriği'. Ürün araması (tonik): 'toner' → 0 sonuç, 0 uygun; 'tonic' → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz."
+    "not": "Kanal: whatsapp · Müşteri: 9 · Gerekçe: 'tonik', 'hacim', 'alkol içeriği'. Ürün araması (tonik): 'toner' → 0 sonuç, 0 uygun; 'tonic' → 0 sonuç, 0 uygun. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı."
   },
   {
     "id": 14,
     "konu": "fiyat",
-    "devret": false,
-    "cevap_taslagi": "Merhaba,\nCilt bakımı ve makyaj kategorilerindeki güncel fiyatlarımız: Attitude Super Leaves Hand Soap — 8,99 $; Olay Ultra Moisture Shea Butter Body Wash — 12,99 $; Vaseline Men Body and Face Lotion — 9,99 $; Essence Mascara Lash Princess — 9,99 $; Eyeshadow Palette with Mirror — 19,99 $; Powder Canister — 14,99 $; Red Lipstick — 12,99 $; Red Nail Polish — 8,99 $. İndirim kodu ve güncel kampanyalar hakkındaki bilgiyi müşteri temsilcimiz ayrıca paylaşacak.\nİyi günler dileriz.",
-    "not": "Kanal: instagram · Müşteri: 10 · Gerekçe: 'fiyat', 'indirim'. Fiyat listesi: skin-care + beauty kategorilerinden 8 ürün. İndirim kodu sistemde yok; uydurulmadı, temsilci eklemeli."
+    "devret": true,
+    "cevap_taslagi": "Merhaba,\nSistemimizdeki cilt bakımı ve makyaj ürünlerinin fiyatları: Attitude Super Leaves Hand Soap — 8,99 $; Olay Ultra Moisture Shea Butter Body Wash — 12,99 $; Vaseline Men Body and Face Lotion — 9,99 $; Essence Mascara Lash Princess — 9,99 $; Eyeshadow Palette with Mirror — 19,99 $; Powder Canister — 14,99 $; Red Lipstick — 12,99 $; Red Nail Polish — 8,99 $. İndirim kodu ve güncel kampanyalar hakkındaki bilgiyi müşteri temsilcimiz ayrıca paylaşacak.\nİyi günler dileriz.",
+    "not": "Kanal: instagram · Müşteri: 10 · Gerekçe: 'fiyat', 'indirim'. Fiyat listesi: skin-care + beauty kategorilerinden 8 ürün. İndirim kodu sistemde yok; uydurulmadı, temsilci eklemeli. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı."
   },
   {
     "id": 15,
     "konu": "urun-sorusu",
-    "devret": false,
+    "devret": true,
     "cevap_taslagi": "Merhaba,\nHayvan deneyi politikası konusundaki detaylı bilgiyi ürün uzmanımız kısa süre içinde iletecek.\nİyi günler dileriz.",
-    "not": "Kanal: whatsapp · Müşteri: 11 · Gerekçe: 'hayvan deneyi politikası', 'urunleriniz'. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz."
+    "not": "Kanal: whatsapp · Müşteri: 11 · Gerekçe: 'hayvan deneyi politikası', 'urunleriniz'. Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; otomasyon ürün bilgisi uydurmaz. Devir nedeni: sistemde olmayan bilgi — temsilci tamamlamalı."
   }
 ]

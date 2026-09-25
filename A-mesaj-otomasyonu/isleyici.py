@@ -34,6 +34,7 @@ class Talep:
     musteri_id: object = None
     mesaj: str = ""
     oncelik: str = "normal"
+    devir_nedeni: str = ""   # özet sayfasında devirleri nedenine göre gruplamak için
 
     def json_ciktisi(self) -> dict:
         return {
@@ -132,11 +133,10 @@ def _siparis_cumlesi(r: SiparisSonucu, dil: str) -> str:
     if r.durum == "bulundu":
         if dil == "en":
             return (f"We checked your order #{r.no}. Items: {_urun_listesi(r.urunler, dil)}. "
-                    f"Order total: {para(r.toplam, dil)}. We will update you on the shipping and delivery "
-                    f"status shortly.")
+                    f"Order total: {para(r.toplam, dil)}.")
+        # Kargo durumu API'de yok; taslak tutamayacağı bir söz ("ayrıca bildireceğiz") vermez.
         return (f"{r.no} numaralı siparişinizi kontrol ettik. Siparişinizdeki ürünler: "
-                f"{_urun_listesi(r.urunler, dil)}. Toplam tutar: {para(r.toplam, dil)}. "
-                f"Kargo ve teslimat durumunu en kısa sürede ayrıca bildireceğiz.")
+                f"{_urun_listesi(r.urunler, dil)}. Toplam tutar: {para(r.toplam, dil)}.")
     if r.durum in ("yetkisiz", "bulunamadi"):
         # Bilerek aynı metin: sipariş numarası tahminiyle bilgi sızmasın.
         if dil == "en":
@@ -208,11 +208,22 @@ def _buyuk_harf(metin: str) -> str:
     return metin[:1].upper() + metin[1:]
 
 
+NEDEN_HASSAS = "hassas konu"
+NEDEN_GUVENLIK = "sipariş doğrulanamadı"
+NEDEN_EKSIK_BILGI = "sistemde olmayan bilgi — temsilci tamamlamalı"
+NEDEN_BELIRSIZ = "sorun anlatımı / konu belirsiz"
+
+
 def urun_cumleleri(api, s: Siniflandirma, konu: str, metin: str, dil: str,
-                   urun_arama: bool = True) -> tuple[list[str], list[str]]:
-    """fiyat / urun-sorusu için cevap cümleleri ve iç notlar."""
+                   urun_arama: bool = True) -> tuple[list[str], list[str], bool]:
+    """fiyat / urun-sorusu için cevap cümleleri, iç notlar ve "temsilci tamamlamalı mı?" bilgisi.
+
+    Taslak sistemde olmayan bir bilgi için temsilci/uzman dönüşü vaat ediyorsa üçüncü değer True olur
+    ve talep devredilir: verilen sözün bir sahibi olmalı (harici incelemede bulunan tutarsızlık).
+    """
     cumleler: list[str] = []
     notlar: list[str] = []
+    takip = False
     urun_ad = s.urun[0] if s.urun else None
     katalog: list[dict] = []
     if urun_arama and s.urun:
@@ -223,8 +234,8 @@ def urun_cumleleri(api, s: Siniflandirma, konu: str, metin: str, dil: str,
         # Veri setinde İngilizce ürün/fiyat sorusu yok; kısa bir genel karşılık yeterli.
         cumleler.append("Thanks for your question. A customer representative will share the details shortly.")
         if katalog:
-            cumleler.append(f"Related products in our catalog: {_katalog_listesi(katalog, dil)}.")
-        return cumleler, notlar
+            cumleler.append(f"The closest match we found in our system: {_katalog_listesi(katalog, dil)}.")
+        return cumleler, notlar, True
 
     normal = normalize(metin)
     if konu == "fiyat":
@@ -233,24 +244,29 @@ def urun_cumleleri(api, s: Siniflandirma, konu: str, metin: str, dil: str,
             if iz:
                 notlar.append(iz.capitalize() + ".")
             if liste:
-                cumleler.append("Cilt bakımı ve makyaj kategorilerindeki güncel fiyatlarımız: "
+                cumleler.append("Sistemimizdeki cilt bakımı ve makyaj ürünlerinin fiyatları: "
                                 f"{_katalog_listesi(liste, dil)}.")
         if katalog:
-            cumleler.append(f"{_buyuk_harf(urun_ad)} için katalogumuzdaki ilgili ürün: "
-                            f"{_katalog_listesi(katalog, dil)}. Farklı bir ürünü soruyorsanız ürün adını "
+            # Test API'si genel bir mağaza: sonuç "en yakın ürün" olarak sunulur ve müşteriye doğru
+            # ürün olup olmadığı sorulur; "kataloğumuzdaki ürün" diye kesin konuşulmaz.
+            cumleler.append(f"{_buyuk_harf(urun_ad)} için sistemimizde bulduğumuz en yakın ürün: "
+                            f"{_katalog_listesi(katalog, dil)}. Aradığınız ürün bu değilse ürün adını "
                             f"paylaşırsanız hemen kontrol edelim.")
         elif urun_ad:
             cumleler.append(f"{_buyuk_harf(urun_ad)} fiyatıyla ilgili güncel bilgiyi müşteri temsilcimiz "
                             f"kısa süre içinde iletecek.")
+            takip = True
         if any(k in normal for k in ("indirim", "kampanya", "kupon", "kod")):
             cumleler.append("İndirim kodu ve güncel kampanyalar hakkındaki bilgiyi müşteri temsilcimiz "
                             "ayrıca paylaşacak.")
             notlar.append("İndirim kodu sistemde yok; uydurulmadı, temsilci eklemeli.")
+            takip = True
         if not cumleler:
             cumleler.append("Fiyat bilgisini müşteri temsilcimiz kısa süre içinde iletecek.")
-        return cumleler, notlar
+            takip = True
+        return cumleler, notlar, takip
 
-    # urun-sorusu
+    # urun-sorusu: içerik / cilt uygunluğu / politika bilgisi sistemde yok → her zaman uzman tamamlar.
     basliklar = " ve ".join(s.urun_basliklari) if s.urun_basliklari else "ürün"
     if urun_ad:
         cumleler.append(f"{_buyuk_harf(urun_ad)} ile ilgili {basliklar} konusundaki detaylı bilgiyi ürün "
@@ -259,10 +275,10 @@ def urun_cumleleri(api, s: Siniflandirma, konu: str, metin: str, dil: str,
         cumleler.append(f"{_buyuk_harf(basliklar)} konusundaki detaylı bilgiyi ürün uzmanımız kısa süre "
                         f"içinde iletecek.")
     if katalog:
-        cumleler.append(f"Katalogumuzdaki ilgili ürün(ler): {_katalog_listesi(katalog, dil)}.")
+        cumleler.append(f"Sistemimizde bulduğumuz ilgili ürün(ler): {_katalog_listesi(katalog, dil)}.")
     notlar.append("Ürün içeriği/cilt uygunluğu doğrulanmış kaynaktan (ürün uzmanı) yanıtlanmalı; "
                   "otomasyon ürün bilgisi uydurmaz.")
-    return cumleler, notlar
+    return cumleler, notlar, True
 
 
 # --- Ana akış -------------------------------------------------------------
@@ -281,16 +297,18 @@ def mesaj_isle(mesaj: dict, api, urun_arama: bool = True) -> Talep:
     if dil == "en":
         notlar.append("Mesaj İngilizce → taslak İngilizce.")
 
-    def talep(devret: bool, taslak: str | None, oncelik: str = "normal") -> Talep:
-        return Talep(mid, s.konu, devret, taslak, " ".join(notlar),
-                     kanal=kanal, musteri_id=musteri, mesaj=metin, oncelik=oncelik)
+    def talep(devret: bool, taslak: str | None, oncelik: str = "normal", neden: str = "") -> Talep:
+        if devret:
+            notlar.append(f"Devir nedeni: {neden}.")
+        return Talep(mid, s.konu, devret, taslak, " ".join(notlar), kanal=kanal, musteri_id=musteri,
+                     mesaj=metin, oncelik=oncelik, devir_nedeni=neden if devret else "")
 
     # 1) Hassas konular: yalnızca devir.
     if s.konu in HASSAS_KONULAR:
         notlar.append(TEMSILCI_NOTU[s.konu])
         notlar.append("Otomatik cevapta ürün önerisi/teşhis yok; yalnızca sabit devir bildirimi.")
         oncelik = "yüksek" if s.konu == "istenmeyen-etki" else "normal"
-        return talep(True, _taslak(dil, [DEVIR_METNI[s.konu][dil]]), oncelik)
+        return talep(True, _taslak(dil, [DEVIR_METNI[s.konu][dil]]), oncelik, NEDEN_HASSAS)
 
     # 2) Sipariş durumu: sahiplik kontrolü.
     if s.konu == "siparis-durumu":
@@ -301,28 +319,39 @@ def mesaj_isle(mesaj: dict, api, urun_arama: bool = True) -> Talep:
             return talep(False, _taslak(dil, [soru]))
         if musteri is None:
             notlar.append("Mesajda musteri_id yok → sipariş sahipliği doğrulanamaz, API'ye gidilmedi.")
-            return talep(True, _taslak(dil, [_siparis_cumlesi(SiparisSonucu(s.siparis_nolari[0], "hata"), dil)]))
+            return talep(True, _taslak(dil, [_siparis_cumlesi(SiparisSonucu(s.siparis_nolari[0], "hata"), dil)]),
+                         neden=NEDEN_GUVENLIK)
 
         sonuclar = [siparis_sorgula(api, no, musteri) for no in s.siparis_nolari]
         devret = any(r.durum != "bulundu" for r in sonuclar)
+        neden = NEDEN_GUVENLIK if devret else ""
         cumleler = [_siparis_cumlesi(r, dil) for r in sonuclar]
         notlar += [_siparis_notu(r) for r in sonuclar]
 
         # İkincil fiyat/ürün sorusu varsa ve devir gerekmiyorsa onu da yanıtla.
         ikincil = next((k for k in s.ikincil_konular if k in ("fiyat", "urun-sorusu")), None)
         if ikincil and not devret:
-            ek, ek_not = urun_cumleleri(api, s, ikincil, metin, dil)
+            ek, ek_not, takip = urun_cumleleri(api, s, ikincil, metin, dil)
             cumleler += ek
             notlar += ek_not
+            if takip:
+                devret, neden = True, NEDEN_EKSIK_BILGI
         elif ikincil:
             notlar.append(f"İkincil {ikincil} sorusu devir nedeniyle otomatik yanıtlanmadı.")
-        return talep(devret, _taslak(dil, cumleler))
+        if s.yardim_istegi and not devret:
+            devret, neden = True, NEDEN_BELIRSIZ
+        return talep(devret, _taslak(dil, cumleler), neden=neden)
 
     # 3) Fiyat / ürün sorusu (+ bonus katalog araması).
     if s.konu in ("fiyat", "urun-sorusu"):
-        cumleler, ek_not = urun_cumleleri(api, s, s.konu, metin, dil)
+        if s.yardim_istegi:
+            # "…ne yapmalıyım?" bir sorun anlatımıdır: ürün bilgisi ya da öneri verilmez.
+            notlar.append("Yardım isteyen ifade ('ne yapmalıyım' vb.) → olası sorun; otomatik ürün/fiyat "
+                          "cevabı verilmedi.")
+            return talep(True, _taslak(dil, [DEVIR_METNI["iade-sikayet"][dil]]), neden=NEDEN_BELIRSIZ)
+        cumleler, ek_not, takip = urun_cumleleri(api, s, s.konu, metin, dil)
         notlar += ek_not
-        return talep(False, _taslak(dil, cumleler))
+        return talep(takip, _taslak(dil, cumleler), neden=NEDEN_EKSIK_BILGI)
 
     # 4) Diğer.
     if s.spam:
@@ -332,12 +361,13 @@ def mesaj_isle(mesaj: dict, api, urun_arama: bool = True) -> Talep:
     if s.genel_kargo:
         notlar.append("Belirli bir siparişle ilgili değil, genel kargo sorusu (SSS). Kargo firması bilgisi "
                       "sistemde yok → göndermeden önce [KARGO FİRMASI] alanını doldurun.")
-        return talep(False, _taslak(dil, [
+        return talep(True, _taslak(dil, [
             "Siparişlerimiz [KARGO FİRMASI] ile gönderilmektedir. Başka bir sorunuz olursa yardımcı olmaktan "
-            "memnuniyet duyarız."]))
+            "memnuniyet duyarız."]), neden=NEDEN_EKSIK_BILGI)
     notlar.append("Otomatik konu bulunamadı → temsilci değerlendirmeli.")
     return talep(True, _taslak(dil, [
-        "Mesajınız için teşekkürler. Talebinizi müşteri temsilcimize ilettik; en kısa sürede dönüş yapılacak."]))
+        "Mesajınız için teşekkürler. Talebinizi müşteri temsilcimize ilettik; en kısa sürede dönüş yapılacak."]),
+        neden=NEDEN_BELIRSIZ)
 
 
 def mesajlari_isle(mesajlar: list[dict], api, urun_arama: bool = True) -> list[Talep]:
