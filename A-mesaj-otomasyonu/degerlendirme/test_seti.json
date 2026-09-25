@@ -1,0 +1,31 @@
+[
+  { "id": "t01", "beklenen": "istenmeyen-etki", "mesaj": "Yüz maskesini kullandım, sonra bütün gece yüzüm karıncalandı ve kıpkırmızı oldu" },
+  { "id": "t02", "beklenen": "istenmeyen-etki", "mesaj": "bebek losyonunuzdan sonra kızımın vücudunda kırmızı noktalar çıktı" },
+  { "id": "t03", "beklenen": "istenmeyen-etki", "mesaj": "Peeling serumu sürünce cildim soyuldu ve çok hassaslaştı, ne yapayım?" },
+  { "id": "t04", "beklenen": "istenmeyen-etki", "mesaj": "My face is burning after the vitamin C serum" },
+  { "id": "t05", "beklenen": "istenmeyen-etki", "mesaj": "Göz kreminizi kullandıktan sonra göz kapaklarım şişti" },
+  { "id": "t06", "beklenen": "istenmeyen-etki", "mesaj": "Deodoranttan koltuk altımda yara oldu" },
+
+  { "id": "t07", "beklenen": "iade-sikayet", "mesaj": "Gelen ürünün son kullanma tarihi geçmiş, bu kabul edilemez" },
+  { "id": "t08", "beklenen": "iade-sikayet", "mesaj": "Şişe kargoda patlamış, her yer krem olmuş" },
+  { "id": "t09", "beklenen": "iade-sikayet", "mesaj": "Ürün sahte geldi bence, orijinaliyle hiç alakası yok" },
+  { "id": "t10", "beklenen": "iade-sikayet", "mesaj": "Kartımdan iki kez çekim yapılmış, düzeltir misiniz?" },
+  { "id": "t11", "beklenen": "iade-sikayet", "mesaj": "Aldığım fondöten tenime uymadı, değiştirebilir miyim?" },
+  { "id": "t12", "beklenen": "iade-sikayet", "mesaj": "The package arrived empty, I need a refund" },
+
+  { "id": "t13", "beklenen": "siparis-durumu", "mesaj": "3 numaralı siparişim kargoya verildi mi?" },
+  { "id": "t14", "beklenen": "siparis-durumu", "mesaj": "Geçen hafta sipariş vermiştim hâlâ gelmedi" },
+  { "id": "t15", "beklenen": "siparis-durumu", "mesaj": "Order 8 hasn't shipped yet, any update?" },
+
+  { "id": "t16", "beklenen": "fiyat", "mesaj": "Göz kremi kaç lira?" },
+  { "id": "t17", "beklenen": "fiyat", "mesaj": "Serumlarda indirim var mı bu hafta?" },
+  { "id": "t18", "beklenen": "fiyat", "mesaj": "Kaç TL üzeri kargo bedava?" },
+
+  { "id": "t19", "beklenen": "urun-sorusu", "mesaj": "Hassas cilde uygun bir güneş kremi var mı?" },
+  { "id": "t20", "beklenen": "urun-sorusu", "mesaj": "Tonikte parfüm var mı, kokusu ağır mı?" },
+  { "id": "t21", "beklenen": "urun-sorusu", "mesaj": "Retinol ile C vitamini aynı gün kullanılır mı?" },
+
+  { "id": "t22", "beklenen": "diger", "mesaj": "İş başvurusu için kime yazabilirim?" },
+  { "id": "t23", "beklenen": "diger", "mesaj": "Harika bir marka, başarılarınızın devamını dilerim" },
+  { "id": "t24", "beklenen": "diger", "mesaj": "Kazandınız! Hediyenizi almak için linke tıklayın: cutt.ly/hediye" }
+]

@@ -1,0 +1,34 @@
+Set: gelistirme_seti.json · 50 mesaj
+Doğruluk: 37/50 = %74
+Hassas mesaj → hassas konu: 10/18
+Hassas mesaj → insana gidiyor (hassas konu ya da 'diger'+devret): 12/18
+TEHLİKELİ (hassas mesaj otomatik cevaplanıyor): 6
+   g01: → urun-sorusu     Kremi sürdükten sonra yüzümde küçük kabarcıklar çıktı, normal mi?
+   g06: → urun-sorusu     Tonik kullandıktan sonra ciltte pullanma ve soyulma oldu, doktora mı gitmeliyim?
+   g07: → urun-sorusu     Güneş kremi gözüme kaçtı, gözüm çok acıyor
+   g12: → urun-sorusu     Paramı geri istiyorum, ürün hiç işe yaramadı
+   g14: → siparis-durumu  Yanlış renk ruj gönderilmiş, siparişim 45 numara
+   g15: → diger           Kargo çok geç geldi ve kutu yırtılmıştı, hiç memnun kalmadım
+
+Konu bazında:
+   urun-sorusu      8/8
+   fiyat            6/8
+   siparis-durumu   6/8
+   iade-sikayet     5/9
+   istenmeyen-etki  5/9
+   diger            7/8
+
+Yanlış sınıflananlar (13):
+   g01: beklenen istenmeyen-etki bulunan urun-sorusu     Kremi sürdükten sonra yüzümde küçük kabarcıklar çıktı, normal mi?
+   g03: beklenen istenmeyen-etki bulunan diger           Şampuanınızdan sonra saçlarım dökülmeye başladı
+   g06: beklenen istenmeyen-etki bulunan urun-sorusu     Tonik kullandıktan sonra ciltte pullanma ve soyulma oldu, doktora mı gitmeliyim?
+   g07: beklenen istenmeyen-etki bulunan urun-sorusu     Güneş kremi gözüme kaçtı, gözüm çok acıyor
+   g12: beklenen iade-sikayet    bulunan urun-sorusu     Paramı geri istiyorum, ürün hiç işe yaramadı
+   g14: beklenen iade-sikayet    bulunan siparis-durumu  Yanlış renk ruj gönderilmiş, siparişim 45 numara
+   g15: beklenen iade-sikayet    bulunan diger           Kargo çok geç geldi ve kutu yırtılmıştı, hiç memnun kalmadım
+   g17: beklenen iade-sikayet    bulunan diger           Müşteri hizmetleriniz berbat, 3 gündür cevap yok
+   g24: beklenen siparis-durumu  bulunan diger           Dün verdiğim sipariş ne zaman gelir?
+   g26: beklenen siparis-durumu  bulunan diger           Sipariş takip linkini gönderebilir misiniz?
+   g32: beklenen fiyat           bulunan urun-sorusu     Nemlendiricinin 50 ml'si kaça?
+   g34: beklenen fiyat           bulunan diger           2 alana 1 bedava kampanyanız hâlâ geçerli mi?
+   g45: beklenen diger           bulunan urun-sorusu     Teşekkürler, ürünler çok güzel 😊
