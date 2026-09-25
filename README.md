@@ -6,7 +6,7 @@
 |---|---|
 | Case e-postası geldi | **11:00** |
 | Çalışmaya başladım | **11:06** |
-| Son teslim commit'i | **{{BITIS}}** (teslim sınırı 14:00) |
+| Son teslim commit'i | **11:49** (teslim sınırı 14:00) |
 | Kullandığım yapay zekâ aracı | **Claude Code** (Claude Opus 5.5, masaüstü uygulaması) |
 
 Kodun, testlerin ve dokümantasyonun taslağını Claude Code yazdı. Benim yazdığım promptlar **olduğu gibi ve sırasıyla** [`promptlar/`](promptlar/) klasöründe. Aynı yerde, yapay zekânın yol boyunca karşılaştığı hatalar ve bunları nasıl çözdüğü de var.

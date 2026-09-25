@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2176 860" font-family="Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" width="2176" height="860" viewBox="0 0 2176 860" font-family="Segoe UI, Arial, sans-serif">
 <rect width="100%" height="100%" fill="#ffffff"/>
 <text x="40" y="44" font-size="20" font-weight="700" fill="#1c2330">Laptop Fiyat Takibi — webscraper.io → Google Sheets + E-posta</text>
 <defs><marker id="ok" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#868e96"/></marker><marker id="okk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#c92a2a"/></marker></defs>

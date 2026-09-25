@@ -28,8 +28,6 @@ ise girmek icin bir case geldi cok onemli mail adresimde var case icerigi berabe
 https://github.com/erdogandogukan/Nurederm_Case_Dogukan_Erdogan olusturdum
 ```
 
-{{SONRAKI_PROMPTLAR}}
-
 ---
 
 ## Claude Code'un Bölüm A'da yaptıkları (özet süreç günlüğü)

@@ -16,8 +16,6 @@ ise girmek icin bir case geldi cok onemli mail adresimde var case icerigi berabe
 > Seçenekler: *Google Sheets + E-posta (Önerilen)* · *n8n Data Table + Telegram* · *CSV dosyası + E-posta*
 > **Cevabım:** `Google Sheets + E-posta (Önerilen)`
 
-{{SONRAKI_PROMPTLAR}}
-
 ---
 
 ## Claude Code'un Bölüm B'de yaptıkları (özet süreç günlüğü)

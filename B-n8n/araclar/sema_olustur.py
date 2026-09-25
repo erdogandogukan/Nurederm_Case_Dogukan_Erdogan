@@ -39,7 +39,8 @@ def main() -> None:
     yukseklik = KENAR * 2 + 50 + (max(ys) - y0) * OLCEK + YUK + 40
 
     parca = [
-        f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {genislik:.0f} {yukseklik:.0f}" '
+        f'<svg xmlns="http://www.w3.org/2000/svg" width="{genislik:.0f}" height="{yukseklik:.0f}" '
+        f'viewBox="0 0 {genislik:.0f} {yukseklik:.0f}" '
         f'font-family="Segoe UI, Arial, sans-serif">',
         f'<rect width="100%" height="100%" fill="#ffffff"/>',
         f'<text x="{KENAR}" y="{KENAR + 4}" font-size="20" font-weight="700" fill="#1c2330">'
