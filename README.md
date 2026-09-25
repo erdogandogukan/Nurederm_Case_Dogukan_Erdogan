@@ -2,6 +2,8 @@
 
 **Doğukan Erdoğan** · 25.09.2026
 
+> **Summary (English).** Take-home case for an AI Automation / Integration role. **Part A** (Python, standard library only) classifies 15 customer messages and hands sensitive ones (returns / complaints, adverse reactions) to a human. It looks up orders via the DummyJSON API and never reveals another customer's order (fail-closed ownership check, identical replies for "not found" and "not yours"). Outputs are `talepler.json` and a one-page summary; 44 unit tests; the classifier was also measured on 74 extra labelled messages. **Part B** is an n8n workflow adapted from template #4640. It crawls every page of the test shop daily and checks the result against the site's own item count. Numeric prices are stored with timestamps in Google Sheets and changes / new / removed products are emailed. On site errors or incomplete crawls it fails loudly (Stop and Error). The workflow was imported and executed on a real n8n 2.40.7 instance. The work was reviewed by a second Claude Code session and by ChatGPT; every finding was verified and fixed. The rest of the documentation is in Turkish.
+
 | | |
 |---|---|
 | Case e-postası geldi | **11:00** |
@@ -9,11 +11,11 @@
 | İlk tam sürüm (iki bölüm, testler, README) | **11:50** |
 | İkinci Claude Code oturumunda bağımsız inceleme | **11:54 – 12:13** |
 | İlk oturumda ikinci oturumun değişikliklerinin kontrolü | **12:18 – 12:29** |
-| Harici inceleme (ChatGPT) bulgularının doğrulanması ve düzeltilmesi | **12:31 – 12:46** |
-| Son commit | **12:46** (teslim sınırı 14:00) |
+| Harici inceleme (ChatGPT) bulgularının doğrulanması ve düzeltilmesi | **12:31 – 12:52** |
+| Son commit | **12:52** (teslim sınırı 14:00) |
 | Kullandığım yapay zekâ aracı | **Claude Code** (Claude Opus 5.5, masaüstü uygulaması) |
 
-Kodun, testlerin ve dokümantasyonun taslağını Claude Code yazdı. Benim yazdığım promptlar **olduğu gibi ve sırasıyla** [`promptlar/`](promptlar/) klasöründe. Aynı yerde, yapay zekânın yol boyunca karşılaştığı hatalar ve bunları nasıl çözdüğü de var.
+Kodun, testlerin ve dokümantasyonun taslağını Claude Code yazdı. Yapay zekâya verdiğim promptlar sırasıyla [`promptlar/`](promptlar/) klasöründe; niyetleri korunarak yeniden ifade edildiler, orijinal metinler git geçmişinde duruyor. Aynı yerde, yapay zekânın yol boyunca karşılaştığı hatalar ve bunları nasıl çözdüğü de var.
 
 **Kısaca:**
 - **Bölüm A:** 15 mesaj konulara ayrıldı. 11'i insana devredildi: 2'si hassas konu, 2'si doğrulanamayan sipariş, 7'si sistemde olmayan bir bilgi gerektirdiği için. Kalan 3 mesajın taslağı doğrudan gönderilebilir, 1 mesaj spam. Başka müşteriye ait siparişin (#12) hiçbir bilgisi çıktıya sızmıyor; bunu 44 testten 6'sı koruyor. Sınıflandırıcıyı ayrıca **74 yeni etiketli mesajla ölçtüm**. Sonuçları, düzeltilen açıkları ve kalan sınırları aşağıda olduğu gibi yazdım.
@@ -40,8 +42,8 @@ Kodun, testlerin ve dokümantasyonun taslağını Claude Code yazdı. Benim yazd
 | **B5** Hata dalı, sessiz "başarılı" yok | Site açılmazsa / ürün yoksa / sayfa eksikse: hata e-postası → **Stop and Error** |
 | **B** Başlangıç şablonu (ad + link) | [#4640 Competitor Price Monitoring…](https://n8n.io/workflows/4640-competitor-price-monitoring-with-web-scrapinggoogle-sheets-and-telegram/) · [`akis-aciklama.md`](B-n8n/akis-aciklama.md) ve akıştaki not |
 | **B Bonus** Ekran görüntüsü | [n8n editöründe akış](B-n8n/ekran-goruntuleri/n8n-editor-akis.png) + [gerçek n8n çalıştırma kaydı](B-n8n/n8n-calistirma-kaydi.md) |
-| Promptlar silinmeden, sırasıyla | [`promptlar/A-claude-code.md`](promptlar/A-claude-code.md) · [`promptlar/B-n8n.md`](promptlar/B-n8n.md) |
-| Depo temiz, küçük commit'ler | Anahtar, `.env` ya da `node_modules` yok · 30 commit |
+| Promptlar sırasıyla | [`promptlar/A-claude-code.md`](promptlar/A-claude-code.md) · [`promptlar/B-n8n.md`](promptlar/B-n8n.md) · yeniden ifade edildikleri dosyada belirtildi, orijinaller git geçmişinde |
+| Depo temiz, küçük commit'ler | Anahtar, `.env` ya da `node_modules` yok · 31 commit |
 
 ## Hızlı başlangıç
 
@@ -194,7 +196,7 @@ Adım adım açıklama, şablondan yapılan değişiklikler (şablondaki `NaN` y
 
 ## Yapay zekâ aracını nasıl kullandım
 
-Claude Code'a tek bir başlangıç promptu verdim ("mailimdeki case'i beraber eksiksiz yapalım"). Case e-postasını ve eklerini Gmail bağlantısı üzerinden kendisi okudu. Karar gerektiren iki noktada bana sordu, ben seçtim: teslim için GitHub reposunu benim açmam ve B'de **Google Sheets + e-posta** kullanılması. Sonra repoyu açıp linkini verdim.
+Claude Code'a görevi tek bir başlangıç promptuyla verdim: case'i e-postamdan bulup iki bölümü eksiksiz, birlikte tamamlamak. Case e-postasını ve eklerini Gmail bağlantısı üzerinden kendisi okudu. Karar gerektiren iki noktada bana sordu, ben seçtim: teslim için GitHub reposunu benim açmam ve B'de **Google Sheets + e-posta** kullanılması. Sonra repoyu açıp linkini verdim.
 
 Çalışma sırasında izlenen yöntem:
 1. **Önce veriyi doğrulama:** Kod yazılmadan önce DummyJSON'daki ilgili siparişler (#12'nin başka müşteriye ait olduğu, 9999'un 404 döndüğü), ürün araması sonuçları ve test sitesinin HTML'i / sayfalaması elle kontrol edildi.
