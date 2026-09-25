@@ -64,7 +64,8 @@ const sonDurumSatirlari = [
     durum: 'aktif',
   })),
   // Kaldırılan ürün bir kez raporlanır, sonra "kaldirildi" olarak işaretlenir.
-  ...kaldirilan.map((o) => ({ ...o, durum: 'kaldirildi' })),
+  // Sheets okuması her satıra `row_number` ekliyor; o alan tabloya sütun olarak geri yazılmasın.
+  ...kaldirilan.map(({ row_number, ...o }) => ({ ...o, durum: 'kaldirildi' })),
 ];
 
 return [{

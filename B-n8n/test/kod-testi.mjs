@@ -133,7 +133,7 @@ await test('değişiklik: fiyatı değişen, yeni çıkan ve kaldırılan ürün
     // u1'in önceki fiyatı 10$ fazla ve Türkçe yerel ayarlı Sheets'ten gelmiş gibi string
     u === u1 ? { fiyat: (u.fiyat + 10).toFixed(2).replace('.', ',') } : {}));
   onceki.push({ json: { link: 'https://webscraper.io/test-sites/e-commerce/static/product/99999',
-    ad: 'Eski Laptop', fiyat: 999, durum: 'aktif' } });
+    ad: 'Eski Laptop', fiyat: 999, durum: 'aktif', row_number: 118 } }); // Sheets okuması row_number ekler
 
   const [s] = calistir('3-degisiklikleri-bul.js', onceki, { 'Ürünleri Ayrıştır': [{ json: tarama }] });
   const d = s.json;
@@ -147,6 +147,7 @@ await test('değişiklik: fiyatı değişen, yeni çıkan ve kaldırılan ürün
   assert.ok(d.gecmis_satirlari.every((r) => r.tarih === tarama.tarih && typeof r.fiyat === 'number'));
   assert.equal(d.son_durum_satirlari.length, tarama.urun_sayisi + 1);
   assert.equal(d.son_durum_satirlari.at(-1).durum, 'kaldirildi');
+  assert.ok(!('row_number' in d.son_durum_satirlari.at(-1)), 'row_number tabloya geri yazılmamalı');
   assert.equal(d.son_durum_satirlari.find((r) => r.link === u1.link).ilk_gorulme, '2026-09-24');
 
   const [e] = calistir('4-bildirim-epostasi.js', [s]);
