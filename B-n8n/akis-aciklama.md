@@ -10,6 +10,14 @@
 
 ## Akış adım adım
 
+**n8n editöründe (ekran görüntüsü):** `workflow.json`, yerel n8n 2.40.7 editörüne yüklenmiş hâli. Kırmızı üçgenler, credential'ı bağlanmamış Google Sheets ve SMTP düğümlerini gösteriyor; bu beklenen durum.
+
+![n8n editöründe akış](ekran-goruntuleri/n8n-editor-akis.png)
+
+*Görüntü nasıl alındı:* Yerel n8n'in normal arayüzü sahip hesabı kurulumu istiyor. Bu yüzden n8n, önizleme modunda (`N8N_PREVIEW_MODE=true`) başlatıldı. `workflow.json` editörün `/workflows/demo` görünümüne, n8n'in kendi gömme bileşeninin kullandığı `openWorkflow` mesajıyla yüklendi. Ekran görüntüsü headless Edge ile alındı. Bu bir **tasarım görünümü**, çalıştırma görünümü değil. Gerçek çalıştırma sonuçları [n8n-calistirma-kaydi.md](n8n-calistirma-kaydi.md) içinde.
+
+**Şema (`workflow.json`'dan üretildi):**
+
 ![akış şeması](akis-semasi.svg)
 
 | # | Düğüm | Ne yapıyor |
@@ -70,6 +78,7 @@ Kimlik bilgileri: Google Sheets düğümlerine **Google Sheets OAuth2**, e-posta
 ## İçe aktarma
 
 1. n8n → *Workflows → Import from File* → önce `hata-workflow.json`, sonra `workflow.json`. CLI ile: `n8n import:workflow --input=workflow.json`.
+   - **Arayüzden içe aktarırken dikkat:** n8n içe aktarılan akışa yeni bir id veriyor. Bu yüzden ana akıştaki `errorWorkflow: hataBildirimAkis` bağlantısı boşa düşer. Ana akışta *Settings → Error Workflow* alanından "Hata Bildirimi (Error Workflow)" akışını bir kez seçin. CLI ile içe aktarımda id'ler korunuyor, bu adım gerekmiyor.
 2. `Ayarlar` düğümünde `sheet_id`, `bildirim_eposta`, `gonderen_eposta` alanlarını doldurun (hata akışındaki e-posta adreslerini de).
 3. Sheets ve SMTP credential'larını seçin → **Elle Çalıştır (test)** ile deneyin → iki akışı da **Active** yapın.
 
@@ -87,6 +96,6 @@ Kimlik bilgileri: Google Sheets düğümlerine **Google Sheets OAuth2**, e-posta
 ## Bilinen sınırlar / dürüst notlar
 
 - **Google Sheets ve e-posta adımları credential olmadan çalıştırılamadı.** Bu adımlar (okuma, append, appendOrUpdate, e-posta) canlı test edilmedi. Parametreleri şablonun gerçek JSON'u ve n8n-nodes-base paketindeki düğüm tanımları esas alınarak yazıldı. İçe aktarımdan sonra Sheets düğümlerindeki sütun eşlemesinin (`autoMapInputData`) sekme başlıklarıyla eşleştiği bir kez kontrol edilmeli. Bu adımların girdisi olan `Değişiklikleri Bul` mantığı ise Node testleriyle doğrulandı.
-- Arayüz ekran görüntüsü eklemedim. Yerel n8n arayüzü sahip hesabı kurulumu istiyor; onun yerine CLI çalıştırma kaydı ve akış şeması var.
+- Ekran görüntüsü editörün **tasarım görünümü**. Çalıştırma görünümünün ekran görüntüsü yok, çünkü yerel n8n arayüzü sahip hesabı kurulumu istiyor. Çalıştırmanın kanıtı CLI çalıştırma kaydı.
 - HTML ayrıştırma Code düğümünde düzenli ifadelerle yapılıyor (n8n Code düğümünde cheerio yok). Site şablonu değişirse `saglikli=false` → hata e-postası gider; sessizce yanlış veri yazılmaz.
 - `son_durum` okuması tüm satırları çeker. Birkaç bin ürüne kadar sorun değil; çok büyük kataloglarda n8n Data Table ya da bir veritabanı daha uygun olur.
